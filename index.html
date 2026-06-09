@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COM 402 — Study & Quiz (Modules 1–5)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --page:#f3f5f7; --panel:#ffffff; --panel2:#f4f6f8; --ink:#2d3a45;
+    --muted:#5e6e7c; --line:#dde3e8; --navy:#002754; --blue:#005493; --blue-d:#003a66;
+    --gold:#f5aa00; --good:#1e7a48; --good-bg:#e8f5ee; --bad:#c0392b; --bad-bg:#fbeae8;
+    --warn:#b8860b; --warn-bg:#fdf6e3; --chip:#eef2f5; --pink-bg:#f7d7e6; --pink-ink:#9c2c6b;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--page); color:var(--ink);
+    font:16px/1.6 "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    display:flex; flex-direction:column; min-height:100vh;
+  }
+  /* ---- UVic-style header ---- */
+  header.brand{background:#fff;border-bottom:1px solid var(--line)}
+  header.brand .row{max-width:1000px;margin:0 auto;padding:16px;display:flex;align-items:center;gap:16px}
+  .logo{font-weight:900;font-size:30px;letter-spacing:-1px;color:var(--navy);line-height:1}
+  .logo .v1{color:var(--blue)} .logo .v2{color:var(--gold)} .logo .v3{color:#2e8b57}
+  .course-line{font-size:22px;font-weight:700;color:var(--navy)}
+  nav.tabs{position:sticky;top:0;z-index:10;background:var(--navy);display:flex;gap:0;padding:0 16px;overflow-x:auto;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+  nav.tabs .inner{max-width:1000px;margin:0 auto;display:flex;width:100%}
+  nav.tabs button{
+    background:transparent;border:none;border-bottom:4px solid transparent;color:#dfe7ef;
+    font-family:inherit;font-size:15px;font-weight:700;padding:16px 18px;cursor:pointer;
+    white-space:nowrap;transition:.15s;
+  }
+  nav.tabs button:hover{color:#fff;background:rgba(255,255,255,.08)}
+  nav.tabs button.active{color:#fff;border-bottom-color:var(--gold)}
+  /* breadcrumb / meta strip */
+  .crumbs{background:#fff;border-bottom:1px solid var(--line)}
+  .crumbs .row{max-width:1000px;margin:0 auto;padding:12px 16px;font-size:14px;color:var(--muted)}
+  .crumbs .here{background:var(--pink-bg);color:var(--pink-ink);border-radius:4px;padding:2px 8px;font-weight:700}
+  .crumbs .sep{margin:0 8px;color:#b6c0c9}
+  .meta-strip{max-width:1000px;margin:10px auto 0;padding:0 16px}
+  .pill{display:inline-block;background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px;margin:0 6px 6px 0;font-size:12.5px;color:var(--navy);font-weight:700}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 16px}
+  main{padding:24px 0 80px;flex:1 0 auto}
+  section.view{display:none}
+  section.view.active{display:block}
+  h2.mod{font-size:22px;font-weight:900;color:var(--navy);margin:30px 0 8px;padding-bottom:8px;border-bottom:3px solid var(--gold)}
+  h3{font-size:17px;font-weight:700;margin:18px 0 4px;color:var(--blue)}
+  p{margin:8px 0}
+  .muted{color:var(--muted)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin:14px 0;box-shadow:0 1px 3px rgba(0,39,84,.05)}
+  .tip{background:var(--good-bg);border:1px solid #bfe0cd;border-left:4px solid var(--good);border-radius:6px;padding:10px 14px;margin:12px 0;font-size:14px}
+  .warn{background:var(--warn-bg);border:1px solid #ecd9a6;border-left:4px solid var(--warn);border-radius:6px;padding:10px 14px;margin:12px 0;font-size:14px}
+  .no{background:var(--bad-bg);border:1px solid #f0c5bf;border-left:4px solid var(--bad);border-radius:6px;padding:10px 14px;margin:12px 0;font-size:14px}
+  ul{margin:8px 0 8px 4px;padding-left:20px}
+  li{margin:4px 0}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--navy);color:#fff;font-weight:700}
+  tr:nth-child(even) td{background:var(--panel2)}
+  .casetitle{font-weight:900;color:var(--blue)}
+  code,.term{background:var(--chip);padding:1px 6px;border-radius:4px;font-size:90%}
+  /* Flashcards */
+  .fc-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 16px}
+  select,.btn{background:#fff;color:var(--ink);border:1px solid #c6d0d8;border-radius:6px;padding:9px 14px;font-size:14px;font-family:inherit;cursor:pointer}
+  .btn{font-weight:700}
+  .btn:hover{border-color:var(--blue);color:var(--blue)}
+  .btn.primary{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+  .btn.primary:hover{background:var(--blue-d);color:#fff}
+  .flashcard{background:#fff;border:1px solid var(--line);border-top:5px solid var(--blue);border-radius:10px;min-height:200px;display:flex;align-items:center;justify-content:center;text-align:center;padding:32px 28px;cursor:pointer;user-select:none;transition:.12s;font-size:18px;box-shadow:0 2px 8px rgba(0,39,84,.07)}
+  .flashcard:hover{box-shadow:0 4px 14px rgba(0,39,84,.12)}
+  .flashcard .label{position:absolute;top:14px;left:18px;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.5px}
+  .fc-shell{position:relative}
+  .fc-counter{text-align:center;color:var(--muted);font-size:13px;margin-top:10px}
+  /* Quiz */
+  .quiz-setup{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .q{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px 18px;margin:14px 0;box-shadow:0 1px 3px rgba(0,39,84,.05)}
+  .q .qnum{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.5px}
+  .q .qtype{float:right;font-size:11px;color:#fff;background:var(--blue);padding:3px 9px;border-radius:999px;font-weight:700}
+  .q .qtext{font-size:16px;margin:6px 0 12px;font-weight:700;color:var(--navy)}
+  .opt{display:block;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:10px 12px;margin:7px 0;cursor:pointer;transition:.1s}
+  .opt:hover{border-color:var(--blue);background:#eef4f8}
+  .opt input{margin-right:9px}
+  .opt.correct{background:var(--good-bg);border-color:var(--good)}
+  .opt.wrong{background:var(--bad-bg);border-color:var(--bad)}
+  input[type=text].fill{width:100%;background:#fff;border:1px solid #c6d0d8;color:var(--ink);border-radius:6px;padding:10px 12px;font-size:15px;font-family:inherit}
+  input[type=text].fill:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,84,147,.15)}
+  .feedback{margin-top:10px;font-size:14px;padding:10px 12px;border-radius:6px;display:none}
+  .feedback.show{display:block}
+  .feedback.ok{background:var(--good-bg);border:1px solid var(--good)}
+  .feedback.err{background:var(--bad-bg);border:1px solid var(--bad)}
+  .reveal{font-size:14px;color:var(--muted);margin-top:6px}
+  .scorebar{position:sticky;bottom:0;background:#fff;border-top:2px solid var(--navy);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;box-shadow:0 -2px 8px rgba(0,39,84,.08)}
+  .scorebar .s{font-weight:900;color:var(--navy)}
+  .result{text-align:center;padding:30px 16px}
+  .result .big{font-size:52px;font-weight:900;color:var(--blue)}
+  .bar{height:12px;background:var(--chip);border-radius:999px;overflow:hidden;margin:14px 0}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--good))}
+  .hidden{display:none!important}
+  footer{color:var(--muted);font-size:12px;text-align:center;padding:26px 16px;border-top:1px solid var(--line);margin-top:40px;background:#fff}
+  a{color:var(--blue)}
+  .selfgrade{display:flex;gap:8px;margin-top:8px}
+  .selfgrade .btn{flex:1;text-align:center}
+</style>
+</head>
+<body>
+<header class="brand">
+  <div class="row">
+    <span class="course-line">Summer 2026 COM 402 A03 · Test #1 Study Pack</span>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="inner">
+    <button class="tab-btn active" data-view="notes">📖 Study Notes</button>
+    <button class="tab-btn" data-view="cards">🃏 Flashcards</button>
+    <button class="tab-btn" data-view="quiz">📝 Quiz Me</button>
+    <button class="tab-btn" data-view="cheat">⚡ Quick Cheat Sheet</button>
+  </div>
+</nav>
+
+<div class="crumbs">
+  <div class="row">
+    Table of Contents <span class="sep">›</span>
+    <span class="here">Modules 1–5</span> <span class="sep">›</span>
+    COM 402 — Test #1 Study Pack
+  </div>
+  <div class="meta-strip">
+    <span class="pill">📅 Exam: June 10, 2026 · ~7:20–8:20pm</span>
+    <span class="pill">💻 Zoom / Brightspace</span>
+    <span class="pill">🔒 Closed book · 25% of grade</span>
+    <span class="pill">✍️ T/F · Fill-in · MC · Short answer</span>
+  </div>
+</div>
+
+<main class="wrap">
+
+<!-- ===================== NOTES ===================== -->
+<section class="view active" id="view-notes">
+  <p class="muted">Learn the <b>elements</b> of each doctrine (T/F and MC questions flip on one missing element) and the <b>definitions</b> cold (short answer rewards exact terminology). Each case has a one-line <b>principle</b> — that's what gets tested.</p>
+
+  <h2 class="mod">Module 1 — Canadian Legal System</h2>
+  <div class="card">
+    <h3>What is law</h3>
+    <p>A set of <b>rules enforced by the state</b>, backed by courts and sanctions, distinct from ethics/morals/social norms. Purpose: maintain order, protect rights, support economic activity, resolve disputes. For business it enables contracts/commerce, allocates risk, regulates market behaviour, and creates compliance obligations.</p>
+
+    <h3>Four sources of Canadian law</h3>
+    <ul>
+      <li><b>Common law</b> — judge-made law based on <b>precedent</b>. Applies everywhere outside Quebec.</li>
+      <li><b>Civil law</b> — <b>Quebec only</b>; based on the <b>Civil Code</b> (codified private law), less reliant on precedent.</li>
+      <li><b>Statutes &amp; regulations</b> — statutes are passed by legislatures; regulations are detailed rules made by government bodies under a statute (more flexible, change faster).</li>
+      <li><b>Constitution / Charter</b> — <i>Constitution Act 1867</i> (division of federal/provincial powers) and <i>Constitution Act 1982</i> (includes the <b>Charter of Rights and Freedoms</b>). The Constitution is the <b>supreme law of Canada</b>. The <b>notwithstanding clause (s. 33)</b> lets a government temporarily override certain Charter rights.</li>
+    </ul>
+
+    <h3>Court hierarchy (lowest → highest)</h3>
+    <ol>
+      <li><b>Provincial courts</b> (small claims, most criminal matters)</li>
+      <li><b>Superior courts</b> (serious criminal, large civil, family)</li>
+      <li><b>Courts of appeal</b></li>
+      <li><b>Supreme Court of Canada</b> — matters of <b>national importance</b> only</li>
+    </ol>
+    <p class="muted">Courts interpret legislation, apply precedent, develop the common law, resolve disputes. <b>Administrative tribunals</b> (labour, human rights, securities) are specialized, less formal decision-makers subject to <b>judicial review</b>.</p>
+
+    <h3>Civil vs. criminal</h3>
+    <table>
+      <tr><th></th><th>Civil</th><th>Criminal</th></tr>
+      <tr><td>Nature</td><td>Private dispute between parties</td><td>Public offence against society</td></tr>
+      <tr><td>Brought by</td><td>Plaintiff</td><td>The Crown / state</td></tr>
+      <tr><td>Standard of proof</td><td><b>Balance of probabilities (~51%)</b></td><td><b>Beyond a reasonable doubt (~92%)</b></td></tr>
+      <tr><td>Remedy</td><td>Damages / orders</td><td>Punishment (fine, imprisonment)</td></tr>
+    </table>
+    <p class="muted">The <b>same conduct can trigger both</b>. Businesses mostly face <i>civil</i> liability.</p>
+
+    <h3>Litigation process (order)</h3>
+    <p>Pleadings (<b>Statement of Claim → Statement of Defence</b> → possible counterclaim/third-party claim) → <b>Discovery</b> → <b>Trial</b> → <b>Appeal</b>. Litigation is expensive, slow, complex — raising <b>access to justice</b> concerns.</p>
+
+    <h3>ADR (Alternative Dispute Resolution)</h3>
+    <ul>
+      <li><b>Negotiation</b> — parties resolve directly</li>
+      <li><b>Mediation</b> — neutral third party facilitates; <b>non-binding</b></li>
+      <li><b>Arbitration</b> — neutral third party <b>decides</b>; usually <b>binding</b></li>
+    </ul>
+    <p class="muted"><i>Advantages:</i> faster, cheaper, private, preserves relationships. <i>Disadvantages:</i> less predictable, limited appeal rights.</p>
+
+    <h3>Class actions</h3>
+    <p>One case for <b>many plaintiffs</b> sharing common legal issues, brought by <b>representative plaintiff(s)</b>. Improves access to justice. Requires <b>court certification</b>; class counsel often paid on <b>contingency</b>; the court must <b>approve any settlement</b>.</p>
+  </div>
+
+  <h2 class="mod">Module 2 — Agency</h2>
+  <div class="card">
+    <h3>Definition</h3>
+    <p><b>Agency</b> is the relationship where one person (the <b>agent</b>) is in law able to represent another (the <b>principal</b>) so as to affect the principal's legal position with third parties by making contracts or disposing of property. The principal grants the agent <b>authority</b>. Businesses transact <b>through their agents</b>.</p>
+
+    <h3>Types of authority</h3>
+    <p><b>Actual authority</b> (real power actually granted):</p>
+    <table>
+      <tr><th>Sub-type</th><th>What it is</th><th>Question it answers</th></tr>
+      <tr><td><b>Express</b></td><td>Authority directly given, orally or in writing</td><td>"What was the agent <i>told</i> to do?"</td></tr>
+      <tr><td><b>Implied</b></td><td>Not stated but necessary/incidental to carry out express authority</td><td>"What <i>must be done</i> to do that job?"</td></tr>
+      <tr><td><b>Usual</b></td><td>Authority that normally comes with a particular position/title</td><td>"What does someone in this <b>role</b> normally do?"</td></tr>
+      <tr><td><b>Customary</b></td><td>Authority from customs/practices of a trade or industry</td><td>"What does the <b>industry</b> expect?"</td></tr>
+    </table>
+    <div class="tip">⚓ <b>Usual = role; Customary = industry.</b> (e.g., stockbroker / ship's master = customary.)</div>
+    <p><b>Ostensible / Apparent authority</b> — authority that <i>appears</i> to exist based on the <b>principal's representation</b> to a third party, even when the agent has <b>no actual authority</b>. A claim <i>by a third party against the principal</i>. <b>Elements:</b></p>
+    <ol>
+      <li>The <b>principal</b> made (or permitted) a <b>representation</b> that the agent had authority;</li>
+      <li>The <b>third party relied</b> on that representation;</li>
+      <li>The reliance was <b>reasonable</b> (and to their detriment).</li>
+    </ol>
+    <p class="muted">If proven, the principal is bound <b>even though the agent breached instructions / exceeded limits</b>.</p>
+
+    <h3>Duties of the agent (fiduciary)</h3>
+    <p>Loyalty; act in the <b>principal's best interest</b> &amp; avoid conflicts; <b>no secret profit</b> / full disclosure; good faith; act within authority. Also <b>delegatus non potest delegare</b> — <i>a delegate cannot delegate</i>.</p>
+    <h3>Duties of the principal</h3>
+    <p>Remuneration (pay), reimbursement, indemnification, cooperation, good faith.</p>
+    <h3>Principal's liability for the agent's torts</h3>
+    <p class="muted"><i>"A tort is no less harmful when committed by an agent, just as a contract is no less binding when negotiated by an agent."</i> A principal can be bound by an agent's tort if committed within the scope of authority/employment.</p>
+
+    <h3>Cases</h3>
+    <p><span class="casetitle">Thompson v. Meade (1891)</span> — An agent (stockbroker) must act for the client, not to profit himself; cannot secretly buy low and charge the client high. <i>Principle: an agent owes a fiduciary duty and may not take a secret profit at the principal's expense.</i></p>
+    <p><span class="casetitle">Lloyd v. Grace, Smith &amp; Co. [1912]</span> — A solicitor's managing clerk fraudulently induced a widow to transfer her property to him. Firm held <b>vicariously liable</b> because the fraud was within the class of work the clerk was authorized to do. <i>Principle: a principal is liable for an agent's fraud committed within the scope of apparent authority, even where the agent acted for his own benefit.</i></p>
+  </div>
+
+  <h2 class="mod">Module 3 — Contract Law</h2>
+  <div class="card">
+    <h3>Definition</h3>
+    <p>A contract is a <b>voluntary exchange of promises creating obligations that, if breached, can be enforced and remedied by the courts.</b> May be oral or written, express or implied.</p>
+
+    <h3>The 5 elements (T/F often removes one)</h3>
+    <ol>
+      <li><b>Consensus</b> — offer + acceptance (<i>consensus ad idem</i>, "meeting of the minds")</li>
+      <li><b>Consideration</b> — each party gives/gets something of value</li>
+      <li><b>Capacity</b> — legal ability to contract</li>
+      <li><b>Legality</b> — lawful purpose, not contrary to public policy</li>
+      <li><b>Intention</b> — intention to create legal relations</li>
+    </ol>
+
+    <h3>1. Consensus (offer &amp; acceptance)</h3>
+    <p>An <b>offer</b> must contain the material terms and may be made by conduct. A <b>counteroffer</b> rejects and replaces the original; a mere <b>request for information</b> does not. <b>Acceptance</b> must be <b>absolute and unconditional</b> and communicated. You can be bound without reading it (objective test — outward conduct, not inner mind).</p>
+    <h3>2. Consideration</h3>
+    <p>Every party must get a benefit. Can be money, goods, services, a promise, forbearance. A bare promise with no consideration is generally <b>not</b> enforceable.</p>
+    <h3>3. Capacity</h3>
+    <p><b>Minors</b> — contracts generally <b>voidable by the minor</b>, <b>except for "necessaries"</b> (food, shelter). Also mental incapacity, intoxication.</p>
+    <h3>4. Legality</h3>
+    <ul>
+      <li><b>Illegal contracts</b> — illegal in their very object (unenforceable)</li>
+      <li><b>Contracts performed illegally</b> — lawful purpose but carried out unlawfully</li>
+    </ul>
+    <h3>5. Intention</h3>
+    <p>Presume intention to be bound in <b>commercial/business</b> relationships; presume <b>no</b> legal intention in <b>domestic/social</b> ones (both rebuttable).</p>
+    <h3>Privity of contract</h3>
+    <p class="muted"><i>"When two parties enter a contract, they create a world of law unto themselves."</i> Only the <b>parties</b> acquire rights/obligations; outsiders cannot enforce or be bound (subject to exceptions).</p>
+    <h3>Vitiating factors</h3>
+    <p><b>Mistake · Misunderstanding · Non est factum · Misrepresentation · Duress &amp; undue influence · Unconscionable transactions.</b></p>
+    <ul>
+      <li><b>Non est factum</b> ("it is not my deed") — signer fundamentally mistaken about the nature of the document.</li>
+      <li><b>Misrepresentation</b> — a false statement of fact that induces the contract.</li>
+      <li><b>Duress / undue influence</b> — improper pressure overbearing free will.</li>
+      <li><b>Unconscionable transaction</b> — gross inequality of bargaining power + improvident bargain.</li>
+    </ul>
+    <h3>End of the contractual relationship</h3>
+    <p><b>Performance · Tender · Breach · Repudiation · Frustration.</b> <b>Tender</b> = an offer to perform. <b>Repudiation</b> = a party signals it won't perform. <b>Frustration</b> = unforeseen event makes performance impossible/radically different, no fault of either party (arises <i>after</i> formation — contrast mistake, which exists <i>at</i> formation).</p>
+    <h3>Damages</h3>
+    <p>A monetary award to compensate the innocent party. Two limits: <b>Remoteness</b> (only losses reasonably foreseeable at contracting) and <b>Mitigation</b> (victim must take reasonable steps to reduce loss).</p>
+
+    <h3>Cases</h3>
+    <p><span class="casetitle">Carlill v. Carbolic Smoke Ball Co. [1893]</span> — £100 offered to anyone who caught flu after using the ball as directed; £1,000 deposited to show sincerity. <i>Principle: an advertisement can be a <b>unilateral offer to the world</b>; performing the conditions is acceptance, and notification of acceptance is not required. The deposit showed intention (not mere "puff").</i></p>
+    <p><span class="casetitle">Brogden v. Metropolitan Railway (1877)</span> — Parties supplied/bought coal on the terms of a draft never formally signed. <i>Principle: a contract can be formed by <b>conduct</b>; acting on the terms of an unexecuted draft = acceptance. (Mental assent alone isn't enough.)</i></p>
+    <p><span class="casetitle">Raffles v. Wichelhaus (1864)</span> — Cotton "ex <i>Peerless</i> from Bombay," but two ships named <i>Peerless</i> sailed; each party meant a different one. <i>Principle: mutual mistake about a fundamental term = no consensus ad idem = no contract.</i></p>
+    <p><span class="casetitle">Jarvis v. Swan Tours (1972)</span> — A "house-party" ski holiday fell far short of the brochure. <i>Principle (Lord Denning): damages can include <b>mental distress / loss of enjoyment</b>, especially for contracts whose purpose is pleasure.</i></p>
+  </div>
+
+  <h2 class="mod">Module 4 — Contract Drafting</h2>
+  <div class="card">
+    <p><b>Core message: bad drafting is a <i>business risk</i>, not just a legal one.</b> The cost = wasted time, money, lost anticipated benefits, and disputes. Causes: over-reliance on precedents, belief that legalese is precise, "tested" language, status through obfuscation.</p>
+    <h3>Common drafting problems (and fixes)</h3>
+    <ul>
+      <li><b>Over-complicated titles/terms</b> — strip filler ("Comprehensive Tri-partite Merger Agreement" → "Merger Agreement").</li>
+      <li><b>Defined terms</b> — capitalize and use consistently; don't mismatch.</li>
+      <li><b>"Quill pen" language</b> — drop archaic legalese ("heretoforth," "desireth," "said assets"); plain English is shorter and clearer.</li>
+      <li><b>ALL CAPS</b> — outdated; use bold, white space, bullets.</li>
+      <li><b>Misuse of "shall"</b> — should impose a <b>duty on the subject</b>. <b>Test: can you replace it with "has an obligation to"?</b> If not, use "will" or present tense ("constitutes").</li>
+      <li><b>Redundancy</b> — cut "including but not limited to," doubled phrases.</li>
+      <li><b>Ambiguity</b> — the central theme.</li>
+    </ul>
+    <div class="no">🚫 <b>NOT directly tested:</b> the <i>specific four types</i> of ambiguity below. The instructor said you only need to be <i>aware</i> of them to identify ambiguity generally. Don't over-memorize the categories.</div>
+    <ul>
+      <li><b>Time</b> — specify AM/PM and time zone.</li>
+      <li><b>Date</b> — write dates in full (avoid DD/MM vs MM/DD).</li>
+      <li><b>Party</b> — say "both X and Y" or "either X or Y."</li>
+      <li><b>Syntactic</b> — restructure so a modifier attaches to the right thing.</li>
+    </ul>
+    <h3>The Comma Cases</h3>
+    <p><span class="casetitle">Rogers v. Bell Aliant ("million-dollar comma," CRTC 2006–07)</span> — A second comma made a termination clause modify both clauses, so Bell could terminate on one year's notice. <b>Rogers ultimately won on appeal</b> — the CRTC relied on the <b>French version</b> of the bilingual agreement, which had only one interpretation (full five-year term). <i>Principle: a single comma can change meaning and cost millions; in bilingual/regulatory documents both versions are read together.</i></p>
+    <p><span class="casetitle">Oakhurst Dairy ("Oxford comma case," Maine)</span> — A wage exemption listed "...packing for shipment <b>or</b> distribution of" goods. The <b>missing serial comma</b> made it unclear whether that was one activity or two. <i>Principle: omitting the serial comma creates ambiguity; courts resolve ambiguous wage statutes in favour of employees (settled ~$5M).</i></p>
+  </div>
+
+  <h2 class="mod">Module 5 — Business Organizations</h2>
+  <div class="card">
+    <p>Three ways to carry on business in Canada: <b>Sole Proprietorship · Partnership · Corporation.</b></p>
+    <table>
+      <tr><th>Feature</th><th>Sole Prop.</th><th>Partnership</th><th>Corporation</th></tr>
+      <tr><td>Separate legal entity?</td><td><b>No</b></td><td><b>No</b></td><td><b>Yes</b></td></tr>
+      <tr><td>Personal liability</td><td><b>Unlimited</b></td><td><b>Unlimited; joint &amp; several</b></td><td><b>Limited</b></td></tr>
+      <tr><td>Formation</td><td>Easiest</td><td>Easy/flexible</td><td>Costly, formal</td></tr>
+      <tr><td>Continuity (perpetual)</td><td>No</td><td>Generally no</td><td><b>Yes</b></td></tr>
+      <tr><td>Raise capital</td><td>Hard</td><td>Moderate</td><td><b>Easiest</b> (issue shares)</td></tr>
+      <tr><td>Owner can be employee?</td><td>No</td><td><b>No</b> (<i>Thorne</i>)</td><td><b>Yes</b> (<i>Lee</i>)</td></tr>
+    </table>
+
+    <h3>Sole Proprietorship</h3>
+    <p>A business with <b>no legal existence separate from its owner</b>. Pros: simple to form/dissolve, tax simplicity. Cons: no perpetuity, <b>unlimited personal liability</b>, hard to raise capital.</p>
+    <h3>Partnership</h3>
+    <p><b>Definition: persons carrying on business in common with a view of profit.</b> (A view to profit is essential.) Cons: <b>no separate legal personality</b>, <b>unlimited personal liability</b>, and liability is <b>joint and several</b> — each partner is liable for the <b>totality</b> of the partnership's debts, including obligations created by other partners.</p>
+    <p><b>Liability timeline (Partnerships Act):</b></p>
+    <ul>
+      <li><b>Before</b> joining — <b>not</b> liable for prior acts.</li>
+      <li><b>While</b> a partner — <b>fully</b> liable.</li>
+      <li><b>After</b> leaving — <b>still</b> liable for obligations incurred during your time (until proper notice of retirement is given).</li>
+      <li><b>"Holding-out" partners</b> — representing yourself as a partner attracts liability without the benefits.</li>
+    </ul>
+    <h3>Partnership cases</h3>
+    <p><span class="casetitle">Thorne v. New Brunswick (WCB) (1962)</span> — A partner who worked in the mill for "wages" was injured. <i>Principle: a partnership is not a separate legal entity, so a partner cannot be an employee of his own firm.</i></p>
+    <p><span class="casetitle">Ernst &amp; Young v. Falconi (1994)</span> — One partner used the firm to help clients defraud creditors; the innocent partner was held jointly &amp; severally liable. <i>Principle: partners are vicariously liable for a co-partner's wrongful acts done in the ordinary course of the firm's business, even if for an improper/fraudulent purpose.</i></p>
+    <p class="muted"><i>(Also referenced: <b>McCormick v. Fasken</b> — an equity partner is not an "employee," reinforcing partners ≠ employees.)</i></p>
+    <h3>Corporation</h3>
+    <p>A <b>separate legal entity created under statute</b>. Parties: <b>shareholders</b> (own shares), <b>directors</b> (manage/board), <b>officers</b> (titled executives). <b>Why incorporate:</b> limited liability, perpetual existence, easy transfer of ownership (shares), easy to add equity, some tax advantages. Drawbacks: costly, ongoing maintenance, some tax disadvantages.</p>
+    <p class="muted"><b>Separate legal personality means:</b> shareholder assets aren't the company's; a shareholder can contract with, manage, be a creditor of, and be an <b>employee</b> of the company. Shares are transferable, supporting perpetual existence.</p>
+    <h3>Corporation cases</h3>
+    <p><span class="casetitle">Salomon v. Salomon &amp; Co. (1897, HL)</span> — Mr. Salomon incorporated his boot business and took secured debentures; on failure, creditors tried to hold him personally liable. <i>Principle (foundational): a properly incorporated company is a legal entity distinct from its shareholders — the "corporate veil." Creditors of the company cannot pursue the shareholders.</i></p>
+    <p><span class="casetitle">Lee v. Lee's Air Farming Ltd. [1961]</span> — Lee was sole governing director and also chief pilot; he died in a crash and his widow claimed workers' compensation. <i>Principle: a corporation is a separate legal person, so one person can be both controlling director/shareholder <b>and</b> an employee (contrast Thorne for partnerships).</i></p>
+  </div>
+</section>
+
+<!-- ===================== FLASHCARDS ===================== -->
+<section class="view" id="view-cards">
+  <p class="muted">Read the question, say the answer out loud, then click the card to reveal. Mark whether you knew it — cards you miss go into a <b>"Terms I got wrong"</b> deck you can revisit. Active recall beats rereading.</p>
+  <div class="fc-controls">
+    <select id="fc-module">
+      <option value="all">All modules</option>
+      <option value="1">Module 1 — Legal System</option>
+      <option value="2">Module 2 — Agency</option>
+      <option value="3">Module 3 — Contracts</option>
+      <option value="4">Module 4 — Drafting</option>
+      <option value="5">Module 5 — Business Orgs</option>
+      <option value="wrong">⚠ Terms I got wrong</option>
+    </select>
+    <button class="btn" id="fc-direction" title="Flip which side shows first">🔃 Question first</button>
+    <button class="btn" id="fc-shuffle">🔀 Shuffle</button>
+    <button class="btn" id="fc-prev">← Prev</button>
+    <button class="btn" id="fc-next">Next →</button>
+    <button class="btn primary" id="fc-review" style="display:none">⚠ Review deck (0)</button>
+    <button class="btn" id="fc-clearwrong" title="Empty the review deck" style="display:none">🧹 Clear</button>
+  </div>
+  <div class="fc-shell">
+    <div class="flashcard" id="flashcard"><span class="label" id="fc-label">QUESTION</span><span id="fc-text">Loading…</span></div>
+  </div>
+  <div class="selfgrade" id="fc-grade" style="display:none;max-width:420px;margin:12px auto 0">
+    <button class="btn" id="fc-knew">✓ I knew it</button>
+    <button class="btn" id="fc-missed">✗ Review later</button>
+  </div>
+  <div class="fc-counter" id="fc-counter"></div>
+  <div class="fc-counter" id="fc-wrongcount" style="font-weight:700;color:var(--bad)"></div>
+</section>
+
+<!-- ===================== QUIZ ===================== -->
+<section class="view" id="view-quiz">
+  <div id="quiz-start">
+    <div class="card">
+      <h3 style="margin-top:0">Set up your quiz</h3>
+      <p class="muted">Questions are drawn at random from a bank of 50+, in the exam's formats: true/false, multiple choice, fill-in-the-blank, and short answer. Auto-graded ones score instantly; short answers you self-mark against the model answer.</p>
+      <div class="quiz-setup">
+        <label>Module:
+          <select id="q-module">
+            <option value="all">All modules (mixed)</option>
+            <option value="1">Module 1 — Legal System</option>
+            <option value="2">Module 2 — Agency</option>
+            <option value="3">Module 3 — Contracts</option>
+            <option value="4">Module 4 — Drafting</option>
+            <option value="5">Module 5 — Business Orgs</option>
+          </select>
+        </label>
+        <label>Number of questions:
+          <select id="q-count">
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20" selected>20</option>
+            <option value="999">As many as possible</option>
+          </select>
+        </label>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer">
+          <input type="checkbox" id="q-reverse" style="width:17px;height:17px;cursor:pointer">
+          🔃 Answer-first recall mode
+        </label>
+        <button class="btn primary" id="q-start">Start quiz →</button>
+      </div>
+      <p class="muted" style="font-size:13px;margin-top:10px">In <b>answer-first mode</b> each card shows the answer and you pick the matching question from four choices (auto-graded). Misses still get re-queued and saved, just like normal mode.</p>
+    </div>
+  </div>
+
+  <div id="quiz-run" class="hidden">
+    <div id="quiz-questions"></div>
+    <div class="scorebar">
+      <span class="s" id="q-progress">0 / 0</span>
+      <span class="s" id="q-score">Score: 0</span>
+      <button class="btn" id="q-reset">↺ Reset</button>
+      <button class="btn primary" id="q-finish">Finish &amp; see results</button>
+    </div>
+  </div>
+
+  <div id="quiz-result" class="hidden">
+    <div class="result card">
+      <div class="muted">YOUR SCORE</div>
+      <div class="big" id="r-pct">0%</div>
+      <div id="r-detail" class="muted"></div>
+      <div class="bar"><i id="r-bar" style="width:0%"></i></div>
+      <div id="r-msg" style="margin:14px 0;font-weight:600"></div>
+      <button class="btn primary" id="q-practice" style="display:none">🔁 Practice the ones I missed</button>
+      <button class="btn primary" id="q-again">Try another quiz</button>
+      <button class="btn" id="q-review">Review my answers</button>
+      <div id="r-wrongnote" class="muted" style="margin-top:12px;font-size:13px"></div>
+    </div>
+    <div id="review-area"></div>
+  </div>
+</section>
+
+<!-- ===================== CHEAT SHEET ===================== -->
+<section class="view" id="view-cheat">
+  <h2 class="mod">Highest-yield distinctions to nail</h2>
+  <div class="card">
+    <ul>
+      <li><b>Void vs. voidable</b> — void = no contract ever existed (a nullity); voidable = valid until the protected party elects to set it aside (e.g., minors).</li>
+      <li><b>Civil vs. criminal</b> — parties / standard of proof (51% vs. ~92%) / remedy.</li>
+      <li><b>Mistake vs. frustration</b> — mistake exists <b>at formation</b>; frustration arises <b>after</b> formation.</li>
+      <li><b>Usual vs. customary authority</b> — <b>role</b> vs. <b>industry</b>.</li>
+      <li><b>Actual vs. apparent authority</b> — real granted power vs. authority created by the <b>principal's representation</b> to a third party.</li>
+      <li><b>Partnership vs. corporation</b> — no separate entity / unlimited joint-and-several liability vs. separate legal entity / limited liability (<i>Thorne</i> vs. <i>Lee</i>).</li>
+      <li><b>Illegal contract vs. contract performed illegally.</b></li>
+    </ul>
+  </div>
+  <h2 class="mod">Watch the absolutes (True/False trap)</h2>
+  <div class="warn">Words like <b>"always," "never," "must," "all," "only"</b> usually make a statement <b>false</b> — the law is full of exceptions. Read the qualifier before answering.</div>
+  <h2 class="mod">Case principles at a glance</h2>
+  <div class="card">
+    <table>
+      <tr><th>Case</th><th>Principle in one line</th></tr>
+      <tr><td>Thompson v. Meade</td><td>Agent owes fiduciary duty; no secret profit.</td></tr>
+      <tr><td>Lloyd v. Grace, Smith</td><td>Principal liable for agent's fraud within apparent authority.</td></tr>
+      <tr><td>Carlill v. Carbolic Smoke Ball</td><td>Ad can be a unilateral offer to the world; performance = acceptance.</td></tr>
+      <tr><td>Brogden v. Metropolitan Rwy</td><td>Contract can form by conduct on an unsigned draft.</td></tr>
+      <tr><td>Raffles v. Wichelhaus</td><td>Mutual mistake (two ships Peerless) = no consensus = no contract.</td></tr>
+      <tr><td>Jarvis v. Swan Tours</td><td>Damages can include loss of enjoyment / mental distress.</td></tr>
+      <tr><td>Rogers v. Bell Aliant</td><td>A comma can change meaning; bilingual versions read together (Rogers won via French).</td></tr>
+      <tr><td>Oakhurst Dairy</td><td>Missing serial comma = ambiguity, resolved for workers.</td></tr>
+      <tr><td>Thorne v. New Brunswick</td><td>Partnership not separate entity; partner ≠ employee of own firm.</td></tr>
+      <tr><td>Ernst &amp; Young v. Falconi</td><td>Partners vicariously liable for co-partner's acts in ordinary course.</td></tr>
+      <tr><td>Salomon v. Salomon</td><td>Company is a separate legal person (corporate veil).</td></tr>
+      <tr><td>Lee v. Lee's Air Farming</td><td>One person can be controlling director AND employee of his corporation.</td></tr>
+    </table>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  COM 402 study pack · Modules 1–5 · Built from class notes, flashcards &amp; key terms. Good luck on June 10. 🍀<br>
+  Tip: bookmark this file or keep it in a shared drive so you can both quiz yourselves anytime.
+</footer>
+
+<script>
+/* ---------- TAB NAVIGATION ---------- */
+document.querySelectorAll('.tab-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById('view-'+b.dataset.view).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+/* ---------- DATA: FLASHCARDS ---------- */
+const FLASHCARDS = [
+  {m:1,q:"Name the four sources of Canadian law.",a:"Common law; civil law (Quebec); statutes & regulations; the Constitution/Charter."},
+  {m:1,q:"Difference between a statute and a regulation?",a:"A statute is passed by a legislature; a regulation is a detailed rule made by a government body under a statute (more flexible, changes faster)."},
+  {m:1,q:"Which province uses civil law, and what is it based on?",a:"Quebec; based on the Civil Code (codified private law, less reliant on precedent)."},
+  {m:1,q:"What does the notwithstanding clause (s. 33) do?",a:"Lets a government temporarily override certain Charter rights."},
+  {m:1,q:"List the court hierarchy from lowest to highest.",a:"Provincial courts → Superior courts → Courts of Appeal → Supreme Court of Canada."},
+  {m:1,q:"Standard of proof: civil vs. criminal?",a:"Civil = balance of probabilities (~51%); criminal = beyond a reasonable doubt (~92%)."},
+  {m:1,q:"Name the three types of ADR in order of formality.",a:"Negotiation → mediation (non-binding) → arbitration (usually binding)."},
+  {m:1,q:"What are the requirements/features of a class action?",a:"Many plaintiffs with common issues; representative plaintiff; court certification; contingency counsel; court must approve settlement."},
+  {m:1,q:"What are administrative tribunals?",a:"Specialized, less formal government decision-makers (labour, human rights, securities), subject to judicial review. Not courts, not private companies."},
+  {m:2,q:"Define agency.",a:"A relationship where the agent can legally represent the principal so as to affect the principal's legal position with third parties (by contract or disposing of property)."},
+  {m:2,q:"Name the four types of actual authority.",a:"Express, implied, usual, customary."},
+  {m:2,q:"Usual vs. customary authority?",a:"Usual focuses on the role/title; customary focuses on the industry/trade."},
+  {m:2,q:"What is implied authority?",a:"Authority not expressly stated but necessary/incidental to carry out the agent's express authority."},
+  {m:2,q:"Define ostensible/apparent authority and its three elements.",a:"Authority that appears to exist from the principal's representation, even with no actual authority. Elements: (1) principal made/permitted a representation of authority; (2) third party relied; (3) reliance was reasonable."},
+  {m:2,q:"List the agent's fiduciary duties.",a:"Loyalty; act in principal's best interest / avoid conflicts; no secret profit / full disclosure; good faith; act within authority."},
+  {m:2,q:"What does delegatus non potest delegare mean?",a:"A delegate cannot delegate — an agent generally cannot pass authority to a sub-agent."},
+  {m:2,q:"Thompson v. Meade — principle?",a:"An agent owes a fiduciary duty and cannot take a secret profit at the principal's expense."},
+  {m:2,q:"Lloyd v. Grace, Smith & Co. — principle?",a:"A principal is liable for an agent's fraud committed within apparent authority, even where the agent acted for his own benefit."},
+  {m:3,q:"Name the five elements of a contract.",a:"Consensus (offer + acceptance), consideration, capacity, legality, intention."},
+  {m:3,q:"What is consensus ad idem?",a:"A meeting of the minds — mutual agreement on the same terms."},
+  {m:3,q:"What is consideration?",a:"The bargained-for benefit each party gives/receives; a promise without consideration is generally unenforceable."},
+  {m:3,q:"Must acceptance be conditional or unconditional?",a:"Absolute and unconditional, and communicated. A conditional response is a counteroffer."},
+  {m:3,q:"Capacity: minors and 'necessaries'?",a:"Minors' contracts are generally voidable by the minor, except contracts for necessaries (food, shelter), which are enforceable."},
+  {m:3,q:"Illegal contract vs. contract performed illegally?",a:"Illegal contract = unlawful object (unenforceable); performed illegally = lawful object carried out unlawfully."},
+  {m:3,q:"Intention presumptions: commercial vs. domestic?",a:"Commercial/business = presumed intention to be legally bound; domestic/social = presumed no legal intention (both rebuttable)."},
+  {m:3,q:"What is privity of contract?",a:"Only the parties to a contract have rights/obligations under it; outsiders generally cannot enforce or be bound by it."},
+  {m:3,q:"List the vitiating factors affecting a contract.",a:"Mistake, misunderstanding, non est factum, misrepresentation, duress/undue influence, unconscionable transactions."},
+  {m:3,q:"What is non est factum?",a:"'It is not my deed' — a signer was fundamentally mistaken about the nature of the document."},
+  {m:3,q:"Mistake vs. frustration?",a:"Mistake exists at formation; frustration is a later unforeseen event making performance impossible/radically different."},
+  {m:3,q:"Two limits on contract damages?",a:"Remoteness (only reasonably foreseeable losses) and mitigation (victim must reduce loss)."},
+  {m:3,q:"Carlill v. Carbolic Smoke Ball — principle?",a:"An advertisement can be a unilateral offer to the world; performing the conditions is acceptance; no notification of acceptance required."},
+  {m:3,q:"Brogden v. Metropolitan Railway — principle?",a:"A contract can be formed by conduct; acting on the terms of an unsigned draft = acceptance."},
+  {m:3,q:"Raffles v. Wichelhaus — principle?",a:"Mutual mistake over a fundamental term (two ships 'Peerless') = no consensus ad idem = no contract."},
+  {m:3,q:"Jarvis v. Swan Tours — principle?",a:"Damages can include mental distress / loss of enjoyment, especially for contracts meant to provide pleasure (holidays)."},
+  {m:4,q:"The 'shall' test?",a:"'Shall' should impose a duty on the subject of the sentence — replaceable by 'has an obligation to'. If not, use 'will' or present tense."},
+  {m:4,q:"What are the four types of ambiguity? (awareness only — not directly tested)",a:"Time (AM/PM + time zone), date (write in full), party (both/either X and/or Y), syntactic (modifier attachment)."},
+  {m:4,q:"Rogers v. Bell Aliant ('million-dollar comma') — what happened and who won?",a:"A second comma made a termination clause modify both clauses (Bell could terminate early). Rogers ultimately won — CRTC relied on the French version, which had only one interpretation (full five-year term)."},
+  {m:4,q:"Oakhurst Dairy (Oxford comma case) — principle?",a:"A missing serial comma created ambiguity in an overtime exemption; resolved in favour of the workers, costing the dairy ~$5M."},
+  {m:4,q:"What is 'quill pen' language and the fix?",a:"Archaic legalese (heretoforth, desireth); fix = plain English, which is shorter and clearer."},
+  {m:4,q:"Why is bad drafting a business risk?",a:"It costs wasted time, money, lost anticipated benefits, and disputes — not just a legal problem."},
+  {m:5,q:"Three ways to carry on business in Canada?",a:"Sole proprietorship, partnership, corporation."},
+  {m:5,q:"Is a sole proprietorship a separate legal entity? Liability?",a:"No separate entity; unlimited personal liability."},
+  {m:5,q:"Define a partnership.",a:"Persons carrying on business in common with a view of profit."},
+  {m:5,q:"What does 'joint and several liability' mean for partners?",a:"Each partner is liable for the entire amount of the partnership's debts, including obligations created by other partners."},
+  {m:5,q:"Partnership liability timeline (before/while/after)?",a:"Not liable for acts before joining; fully liable while a partner; still liable after leaving for obligations incurred during your time (until proper notice to creditors)."},
+  {m:5,q:"Thorne v. New Brunswick — principle?",a:"A partnership is not a separate legal entity, so a partner cannot be an employee of his own firm."},
+  {m:5,q:"Ernst & Young v. Falconi — principle?",a:"Partners are vicariously liable for a co-partner's wrongful acts done in the ordinary course of the firm's business, even if for a fraudulent purpose."},
+  {m:5,q:"Define a corporation.",a:"A separate legal entity created under statute, with powers usually reserved for individuals (sue/be sued, own property, hire, borrow)."},
+  {m:5,q:"Top reasons to incorporate?",a:"Limited liability, perpetual existence, easy transfer of ownership (shares), easy to raise equity."},
+  {m:5,q:"Salomon v. Salomon — principle?",a:"A properly incorporated company is a separate legal person; shareholders aren't liable for its debts (the corporate veil)."},
+  {m:5,q:"Lee v. Lee's Air Farming — principle?",a:"Because a corporation is a separate legal person, one person can be both controlling director/shareholder AND an employee of the company."},
+  {m:5,q:"Thorne vs. Lee — the key contrast?",a:"Partner cannot be an employee of his firm (no separate entity); but a controlling shareholder CAN be an employee of his corporation (separate entity)."},
+
+  // ===== CASE CARDS — what were the FACTS? (learn what each case actually is) =====
+  {m:2,q:"CASE FACTS: Thompson v. Meade (1891) — what happened?",a:"A stockbroker (agent) secretly bought shares at a low price and charged his client a higher price, pocketing the difference. → Breach of the fiduciary duty of loyalty / no-secret-profit rule."},
+  {m:2,q:"CASE FACTS: Lloyd v. Grace, Smith & Co. [1912] — what happened?",a:"A solicitor firm's managing clerk fraudulently induced a widow to transfer her property to him for his own benefit. → The firm was vicariously liable because the fraud was within the class of work the clerk was authorized to do (apparent authority)."},
+  {m:3,q:"CASE FACTS: Carlill v. Carbolic Smoke Ball Co. [1893] — what happened?",a:"A company advertised £100 to anyone who caught flu after using its smoke ball as directed, and deposited £1,000 to show sincerity. Mrs Carlill used it, caught flu, and sued. → A binding unilateral offer to the world; performance = acceptance; the deposit showed intention (not mere 'puff')."},
+  {m:3,q:"CASE FACTS: Brogden v. Metropolitan Railway (1877) — what happened?",a:"Parties supplied and bought coal on the terms of a draft contract that was never formally signed. → Their conduct (ordering/supplying on those terms) created a binding contract; acting on an unsigned draft = acceptance."},
+  {m:3,q:"CASE FACTS: Raffles v. Wichelhaus (1864) — what happened?",a:"Cotton was to arrive 'ex Peerless from Bombay,' but two ships named Peerless sailed (one October, one December) and each party meant a different one. → No consensus ad idem, so no contract."},
+  {m:3,q:"CASE FACTS: Jarvis v. Swan Tours (1972) — what happened?",a:"A solicitor booked a 'house-party' ski holiday that fell far short of the brochure. → Lord Denning allowed damages for disappointment and loss of enjoyment, not just wasted money."},
+  {m:4,q:"CASE FACTS: Rogers v. Bell Aliant ('million-dollar comma') — what happened?",a:"A second comma in a termination clause made it modify both clauses, letting Bell Aliant terminate on one year's notice (~$1M at stake). → Rogers ultimately won: the CRTC relied on the French version of the bilingual agreement, which had only one interpretation (full five-year term)."},
+  {m:4,q:"CASE FACTS: Oakhurst Dairy (Oxford comma case, Maine) — what happened?",a:"A wage-and-hour exemption listed 'packing for shipment or distribution of' goods. The missing serial (Oxford) comma made it unclear whether that was one activity or two. → Ambiguity resolved in favour of the workers; settled ~$5M."},
+  {m:5,q:"CASE FACTS: Thorne v. New Brunswick (WCB) (1962) — what happened?",a:"A partner who worked in the firm's mill for 'wages' was injured and claimed workers' compensation. → A partnership is not a separate legal entity, so a partner cannot be an employee of his own firm; claim denied."},
+  {m:5,q:"CASE FACTS: Ernst & Young v. Falconi (1994) — what happened?",a:"One law partner (F) used the firm to help clients fraudulently defraud creditors; the innocent partner (K) was held jointly and severally liable. → The acts were of the type normally performed by the firm, so within the ordinary course of business."},
+  {m:5,q:"CASE FACTS: McCormick v. Fasken — what does it stand for?",a:"An equity partner was held NOT to be an 'employee,' so was not protected by human-rights/employment law. → Reinforces that partners are not employees (supports Thorne)."},
+  {m:5,q:"CASE FACTS: Salomon v. Salomon & Co. (1897, HL) — what happened?",a:"Mr Salomon incorporated his boot business and took secured debentures; when the company failed, creditors tried to hold him personally liable. → The company was a separate legal person, so Salomon was not personally liable and his security was valid (the 'corporate veil')."},
+  {m:5,q:"CASE FACTS: Lee v. Lee's Air Farming Ltd. [1961] — what happened?",a:"Lee owned/controlled an aerial crop-spraying company, was its sole governing director, and worked as its chief pilot; he died in a crash and his widow claimed workers' compensation. → Company and Lee were separate legal persons, so he could be both director/controller AND an employee; the widow recovered."},
+
+  // ===== MORE CONCEPT CARDS =====
+  {m:1,q:"What are the two Constitution Acts and what does each cover?",a:"Constitution Act 1867 = division of federal/provincial powers. Constitution Act 1982 = includes the Charter of Rights and Freedoms. The Constitution is the supreme law of Canada."},
+  {m:1,q:"Where does Discovery sit in the litigation process?",a:"After pleadings (Statement of Claim → Defence) and before trial: pleadings → discovery → trial → appeal."},
+  {m:1,q:"What is the purpose of law for business?",a:"It enables contracts/commerce, allocates risk, regulates market behaviour, and creates compliance obligations."},
+  {m:1,q:"What is common law based on?",a:"Judge-made law based on precedent (reasoning from past cases); applies everywhere outside Quebec."},
+  {m:2,q:"Express vs. implied authority — the question each answers?",a:"Express = 'What was the agent told to do?' Implied = 'What must be done (necessary/incidental) to do that job?'"},
+  {m:2,q:"List the duties of the principal.",a:"Remuneration (pay the agent), reimbursement, indemnification, cooperation, and good faith."},
+  {m:2,q:"Can a principal be liable for an agent's tort?",a:"Yes — a principal can be bound by an agent's tort (within scope of authority/employment), just as by a contract. 'A tort is no less harmful when committed by an agent.'"},
+  {m:3,q:"What must an offer contain, and can it be made by conduct?",a:"It must contain the material terms, and yes, an offer can be made by conduct."},
+  {m:3,q:"Void vs. voidable?",a:"Void = no contract ever existed (a nullity). Voidable = valid until the protected party elects to set it aside (e.g., a minor's contract)."},
+  {m:3,q:"Define tender, repudiation, and frustration.",a:"Tender = an offer to perform. Repudiation = a party signals it will not perform. Frustration = an unforeseen event after formation makes performance impossible/radically different, no fault of either party."},
+  {m:3,q:"What is misrepresentation?",a:"A false statement of fact that induces the other party to enter the contract (a vitiating factor)."},
+  {m:4,q:"What is the fix for ALL CAPS conspicuous clauses?",a:"ALL CAPS is outdated; use bold, white space, and bullets instead."},
+  {m:4,q:"Name two causes of poor drafting.",a:"Over-reliance on precedents; the belief that legalese is precise; reliance on 'tested' language; status through obfuscation."},
+  {m:4,q:"How should defined terms be handled?",a:"Capitalize them and use them consistently; don't mismatch (e.g., 'Employee … his … the Firm')."},
+  {m:5,q:"Name the three parties in a corporation and their roles.",a:"Shareholders (own shares), directors (manage / the board), officers (titled executives running day-to-day operations)."},
+  {m:5,q:"What are the drawbacks of incorporating?",a:"Costly, unwieldy, ongoing maintenance/record-keeping, and some tax disadvantages."},
+  {m:5,q:"What is a 'holding-out' (pretend) partner?",a:"Someone who represents themselves (or lets themselves be represented) as a partner — they can attract partnership liability without the benefits."},
+  {m:5,q:"Which business forms have perpetual existence?",a:"Only the corporation (shares are transferable, supporting continuity). Sole proprietorships and partnerships generally do not."}
+];
+
+/* ---------- DATA: QUIZ BANK ----------
+   type: 'tf' | 'mc' | 'fill' | 'short'
+   tf: answer true/false (boolean)
+   mc: options[], correct index
+   fill: accept[] array of acceptable lowercase strings
+   short: model answer (self-graded)
+*/
+const QUIZ = [
+  // ---- Module 1 ----
+  {m:1,type:"mc",q:"Which province in Canada uses a civil law (Civil Code) system for private law?",options:["Ontario","Quebec","British Columbia","Nova Scotia"],correct:1,why:"Civil law applies in Quebec only, based on the Civil Code."},
+  {m:1,type:"mc",q:"Which court hears only matters of national importance?",options:["Provincial courts","Superior courts","Courts of appeal","Supreme Court of Canada"],correct:3,why:"The Supreme Court of Canada hears matters of national importance only."},
+  {m:1,type:"tf",q:"The standard of proof in a criminal case is the balance of probabilities (~51%).",answer:false,why:"Criminal = beyond a reasonable doubt (~92%). Balance of probabilities (~51%) is the CIVIL standard."},
+  {m:1,type:"tf",q:"The same conduct can give rise to both civil and criminal liability.",answer:true,why:"e.g., an assault can be both a criminal charge and a civil lawsuit."},
+  {m:1,type:"fill",q:"In ADR, a neutral third party who facilitates but whose decision is NON-binding is conducting ____.",accept:["mediation","mediator"],why:"Mediation is non-binding; arbitration is the binding one."},
+  {m:1,type:"mc",q:"Order of ADR from least to most formal/binding:",options:["Arbitration → mediation → negotiation","Negotiation → mediation → arbitration","Mediation → negotiation → arbitration","Negotiation → arbitration → mediation"],correct:1,why:"Negotiation → mediation (non-binding) → arbitration (usually binding)."},
+  {m:1,type:"fill",q:"A detailed rule made by a government body under the authority of a statute is called a ____.",accept:["regulation","a regulation"],why:"Legislature → statute; government body/agency → regulation; judges → common law."},
+  {m:1,type:"tf",q:"A class action requires court certification and the court must approve any settlement.",answer:true,why:"Both certification and court-approved settlement are required features."},
+  {m:1,type:"short",q:"What is the supreme law of Canada, and what does the notwithstanding clause (s. 33) allow?",model:"The Constitution is the supreme law of Canada. The notwithstanding clause (s. 33) lets a government temporarily override certain Charter rights."},
+  {m:1,type:"mc",q:"Administrative tribunals (labour, human rights, securities) are:",options:["Ordinary criminal courts","Private companies","Specialized, less formal decision-makers subject to judicial review","The same as the Supreme Court"],correct:2,why:"They are specialized, less formal, and subject to judicial review — not courts, not private companies."},
+  {m:1,type:"short",q:"Put the litigation process in order.",model:"Pleadings (Statement of Claim → Statement of Defence, possible counterclaim) → Discovery → Trial → Appeal."},
+
+  // ---- Module 2 ----
+  {m:2,type:"fill",q:"In agency, the person who grants authority and whose legal position is affected is the ____.",accept:["principal","the principal"],why:"The principal grants authority to the agent."},
+  {m:2,type:"mc",q:"Authority that normally comes with a particular position or title is:",options:["Express authority","Implied authority","Usual authority","Customary authority"],correct:2,why:"Usual = role/title. Customary = industry/trade."},
+  {m:2,type:"mc",q:"Authority arising from the customs of a particular trade or industry is:",options:["Express","Implied","Usual","Customary"],correct:3,why:"Customary focuses on the industry (e.g., stockbroker, ship's master)."},
+  {m:2,type:"tf",q:"Apparent (ostensible) authority requires that the AGENT made a representation of his own authority.",answer:false,why:"It must be the PRINCIPAL who made or permitted the representation."},
+  {m:2,type:"short",q:"State the three elements of apparent/ostensible authority.",model:"(1) The principal made or permitted a representation that the agent had authority; (2) the third party relied on it; (3) the reliance was reasonable (and to their detriment)."},
+  {m:2,type:"fill",q:"The maxim that 'a delegate cannot delegate' is ____ non potest delegare.",accept:["delegatus"],why:"Delegatus non potest delegare — an agent generally can't pass authority to a sub-agent."},
+  {m:2,type:"mc",q:"Which is NOT a fiduciary duty of an agent?",options:["Loyalty / act in principal's best interest","No secret profit / full disclosure","Pay the agent's remuneration","Act within authority"],correct:2,why:"Remuneration is a duty of the PRINCIPAL, not the agent."},
+  {m:2,type:"mc",q:"In Lloyd v. Grace, Smith & Co., why was the firm liable for the clerk's fraud?",options:["The clerk had express written authority to defraud","The fraud was within the class of work the clerk was authorized to do (apparent authority)","The widow was also an agent","The firm signed the fraudulent documents"],correct:1,why:"Principal is liable for an agent's fraud within the scope of apparent authority, even where the agent acted for his own benefit."},
+  {m:2,type:"short",q:"What is the principle of Thompson v. Meade?",model:"An agent owes a fiduciary duty and may not take a secret profit at the principal's expense (a broker can't secretly buy low and charge the client high)."},
+  {m:2,type:"tf",q:"If apparent authority is proven, the principal is bound even though the agent breached instructions or exceeded limits.",answer:true,why:"That is the whole point of apparent authority — the principal's representation binds them."},
+
+  // ---- Module 3 ----
+  {m:3,type:"short",q:"Name the five elements of a contract.",model:"Consensus (offer + acceptance), consideration, capacity, legality, intention."},
+  {m:3,type:"tf",q:"A bare promise with no consideration is generally enforceable.",answer:false,why:"A promise without consideration is generally NOT enforceable."},
+  {m:3,type:"fill",q:"'A meeting of the minds' is captured by the Latin phrase consensus ad ____.",accept:["idem"],why:"Consensus ad idem = a meeting of the minds."},
+  {m:3,type:"mc",q:"A response to an offer that changes a term:",options:["Is a valid acceptance","Is a counteroffer that rejects and replaces the original","Is merely a request for information","Has no legal effect"],correct:1,why:"Acceptance must be absolute and unconditional; changing a term is a counteroffer."},
+  {m:3,type:"mc",q:"Minors' contracts are generally:",options:["Always fully enforceable","Void from the start","Voidable by the minor, except for necessaries","Only enforceable if in writing"],correct:2,why:"Voidable by the minor, except contracts for necessaries (food, shelter)."},
+  {m:3,type:"tf",q:"Frustration exists at the moment of formation, while mistake arises later.",answer:false,why:"Reversed: mistake exists AT formation; frustration arises AFTER formation."},
+  {m:3,type:"fill",q:"'It is not my deed' — a signer fundamentally mistaken about the nature of the document — is the doctrine of non est ____.",accept:["factum"],why:"Non est factum."},
+  {m:3,type:"mc",q:"The two limits on contract damages are:",options:["Remoteness and mitigation","Privity and capacity","Tender and frustration","Consideration and legality"],correct:0,why:"Remoteness (only reasonably foreseeable losses) and mitigation (victim must reduce loss)."},
+  {m:3,type:"short",q:"What is the principle of Carlill v. Carbolic Smoke Ball Co.?",model:"An advertisement can be a unilateral offer to the world; performing the stated conditions is acceptance, and notification of acceptance is not required. The deposit showed intention to be bound."},
+  {m:3,type:"mc",q:"In Raffles v. Wichelhaus (the two ships 'Peerless'), the court held:",options:["A binding contract existed on the October ship","A binding contract existed on the December ship","No contract — no consensus ad idem","The buyer had to pay damages"],correct:2,why:"Mutual mistake about a fundamental term = no meeting of the minds = no contract."},
+  {m:3,type:"short",q:"What is the principle of Brogden v. Metropolitan Railway?",model:"A contract can be formed by conduct; acting on the terms of an unsigned/unexecuted draft amounts to acceptance. Mere mental assent is not enough."},
+  {m:3,type:"mc",q:"Jarvis v. Swan Tours established that damages for breach can include:",options:["Punitive damages always","Mental distress / loss of enjoyment, especially for contracts meant to provide pleasure","Only the price paid","Criminal penalties"],correct:1,why:"Lord Denning allowed recovery for disappointment and loss of enjoyment."},
+  {m:3,type:"tf",q:"Privity means only the parties to a contract generally acquire rights or obligations under it.",answer:true,why:"Outsiders generally cannot enforce or be bound by it (subject to exceptions)."},
+  {m:3,type:"mc",q:"Which presumption applies to domestic/social agreements regarding intention?",options:["Presumed intention to be legally bound","Presumed NO intention to be legally bound","Always legally binding","Never rebuttable"],correct:1,why:"Domestic/social = presumed no legal intention; commercial = presumed bound. Both rebuttable."},
+
+  // ---- Module 4 ----
+  {m:4,type:"mc",q:"The test for whether 'shall' is used correctly is:",options:["Can you replace it with 'might'?","Can you replace it with 'has an obligation to'?","Is it in all caps?","Is it in the title?"],correct:1,why:"'Shall' should impose a duty on the subject — replaceable by 'has an obligation to'."},
+  {m:4,type:"tf",q:"The core message of the drafting module is that bad drafting is purely a legal problem, not a business risk.",answer:false,why:"Bad drafting is a BUSINESS risk — wasted time, money, lost benefits, and disputes."},
+  {m:4,type:"mc",q:"In Rogers v. Bell Aliant ('million-dollar comma'), who ultimately won and why?",options:["Bell Aliant — the comma let them terminate early","Rogers — the CRTC relied on the French version, which had only one interpretation","Neither — the contract was void","Rogers — the comma was deleted"],correct:1,why:"Rogers ultimately won because the bilingual agreement's French version had only one interpretation (full five-year term)."},
+  {m:4,type:"short",q:"What is the principle of the Oakhurst Dairy (Oxford comma) case?",model:"A missing serial (Oxford) comma created ambiguity in an overtime exemption; courts resolve ambiguous wage statutes in favour of employees (settled ~$5M)."},
+  {m:4,type:"fill",q:"Archaic legalese like 'heretoforth' and 'desireth' is nicknamed ____ pen language.",accept:["quill"],why:"'Quill pen' language; the fix is plain English."},
+  {m:4,type:"tf",q:"Using ALL CAPS is the recommended modern way to make a clause conspicuous.",answer:false,why:"ALL CAPS is outdated; use bold, white space, and bullets instead."},
+
+  // ---- Module 5 ----
+  {m:5,type:"mc",q:"Which business form is a separate legal entity with limited liability?",options:["Sole proprietorship","Partnership","Corporation","None of these"],correct:2,why:"Only the corporation is a separate legal entity with limited liability."},
+  {m:5,type:"short",q:"Define a partnership.",model:"Persons carrying on business in common with a view of profit."},
+  {m:5,type:"tf",q:"In a partnership, liability is joint and several, so each partner can be liable for the entire amount of the partnership's debts.",answer:true,why:"Joint and several = each partner liable for the totality, including debts created by other partners."},
+  {m:5,type:"fill",q:"A sole proprietorship has unlimited personal ____ because it is not a separate legal entity.",accept:["liability"],why:"No separation means the owner bears all contract and tort liability."},
+  {m:5,type:"mc",q:"Under the Partnerships Act, a new partner is:",options:["Liable for all acts before joining","NOT liable for acts before they became a partner","Never liable for anything","Only liable after leaving"],correct:1,why:"Not liable for acts before joining; fully liable while a partner; still liable after leaving for obligations incurred during their time."},
+  {m:5,type:"mc",q:"Thorne v. New Brunswick held that:",options:["A partner can be an employee of his own firm","A partnership is a separate legal entity","A partner cannot be an employee of his own firm (no separate entity)","Partners have limited liability"],correct:2,why:"A partnership has no separate legal personality, so a partner cannot be an employee of his own firm."},
+  {m:5,type:"short",q:"What is the principle of Ernst & Young v. Falconi?",model:"Partners are vicariously liable for a co-partner's wrongful acts done in the ordinary course of the firm's business, even if done for an improper or fraudulent purpose."},
+  {m:5,type:"mc",q:"Salomon v. Salomon & Co. is the foundational case establishing:",options:["Joint and several partner liability","That a properly incorporated company is a separate legal person (the corporate veil)","That advertisements are offers","Loss of enjoyment damages"],correct:1,why:"A company is a legal entity distinct from its shareholders; creditors cannot pursue the shareholders."},
+  {m:5,type:"tf",q:"In Lee v. Lee's Air Farming, the court held that one person CANNOT be both controlling director and employee of the same company.",answer:false,why:"The opposite — because a corporation is a separate person, Lee could be both controlling director/shareholder AND an employee."},
+  {m:5,type:"short",q:"Explain the key contrast between Thorne and Lee.",model:"A partner cannot be an employee of his own firm because a partnership is not a separate legal entity (Thorne). But a controlling shareholder CAN be an employee of his corporation because a corporation is a separate legal entity (Lee)."},
+  {m:5,type:"mc",q:"Which is a top reason to incorporate?",options:["Easiest to dissolve","Unlimited liability","Limited liability and perpetual existence","No record-keeping required"],correct:2,why:"Limited liability, perpetual existence, easy transfer of shares, easy to raise equity."},
+
+  // ---- CASE IDENTIFICATION ROUND (name the case from the facts/principle) ----
+  {m:2,type:"mc",q:"NAME THE CASE: A stockbroker secretly bought shares at a low price and charged his client a higher price, breaching the duty of loyalty / no-secret-profit rule.",options:["Lloyd v. Grace, Smith & Co.","Thompson v. Meade","Salomon v. Salomon","Carlill v. Carbolic Smoke Ball"],correct:1,why:"Thompson v. Meade — an agent owes a fiduciary duty and may not take a secret profit at the principal's expense."},
+  {m:2,type:"mc",q:"NAME THE CASE: A solicitor's managing clerk fraudulently induced a widow to transfer her property to him; the firm was held vicariously liable under apparent authority.",options:["Thompson v. Meade","Ernst & Young v. Falconi","Lloyd v. Grace, Smith & Co.","Lee v. Lee's Air Farming"],correct:2,why:"Lloyd v. Grace, Smith & Co. — a principal is liable for an agent's fraud within apparent authority, even for the agent's own benefit."},
+  {m:3,type:"mc",q:"NAME THE CASE: A company advertised £100 to anyone who caught flu after using its smoke ball and deposited £1,000 to show sincerity; held a binding unilateral offer to the world.",options:["Brogden v. Metropolitan Railway","Carlill v. Carbolic Smoke Ball Co.","Raffles v. Wichelhaus","Jarvis v. Swan Tours"],correct:1,why:"Carlill v. Carbolic Smoke Ball — an ad can be a unilateral offer to the world; performance = acceptance, no notification needed."},
+  {m:3,type:"mc",q:"NAME THE CASE: Parties bought and supplied coal on the terms of a draft contract never formally signed; their conduct created a binding contract.",options:["Carlill v. Carbolic Smoke Ball","Raffles v. Wichelhaus","Brogden v. Metropolitan Railway","Salomon v. Salomon"],correct:2,why:"Brogden v. Metropolitan Railway — a contract can be formed by conduct; acting on an unsigned draft = acceptance."},
+  {m:3,type:"mc",q:"NAME THE CASE: Cotton was to arrive 'ex Peerless from Bombay,' but two ships named Peerless sailed and each party meant a different one — held no contract.",options:["Raffles v. Wichelhaus","Brogden v. Metropolitan Railway","Carlill v. Carbolic Smoke Ball","Jarvis v. Swan Tours"],correct:0,why:"Raffles v. Wichelhaus — mutual mistake about a fundamental term = no consensus ad idem = no contract."},
+  {m:3,type:"mc",q:"NAME THE CASE: A solicitor's 'house-party' ski holiday fell far short of the brochure; Lord Denning allowed damages for disappointment and loss of enjoyment.",options:["Carlill v. Carbolic Smoke Ball","Jarvis v. Swan Tours","Raffles v. Wichelhaus","Lloyd v. Grace, Smith & Co."],correct:1,why:"Jarvis v. Swan Tours — damages can include mental distress / loss of enjoyment, especially for contracts meant to provide pleasure."},
+  {m:4,type:"mc",q:"NAME THE CASE: A second comma in a termination clause let one party terminate early; the dispute was ultimately decided by the French version of the bilingual agreement.",options:["Oakhurst Dairy","Rogers v. Bell Aliant","Salomon v. Salomon","Raffles v. Wichelhaus"],correct:1,why:"Rogers v. Bell Aliant — the 'million-dollar comma'; Rogers ultimately won via the French version (one interpretation: full five-year term)."},
+  {m:4,type:"mc",q:"NAME THE CASE: A missing Oxford (serial) comma in a wage exemption created ambiguity resolved in favour of the workers.",options:["Rogers v. Bell Aliant","Oakhurst Dairy","Ernst & Young v. Falconi","Thorne v. New Brunswick"],correct:1,why:"Oakhurst Dairy — the Oxford comma case; ambiguous wage statutes resolved in favour of employees (~$5M)."},
+  {m:5,type:"mc",q:"NAME THE CASE: A partner worked in the firm's mill for 'wages,' was injured, and was denied workers' compensation because a partnership is not a separate legal entity.",options:["Lee v. Lee's Air Farming","Salomon v. Salomon","Thorne v. New Brunswick","Ernst & Young v. Falconi"],correct:2,why:"Thorne v. New Brunswick — a partner cannot be an employee of his own firm (no separate legal personality)."},
+  {m:5,type:"mc",q:"NAME THE CASE: One law partner used the firm to help clients defraud creditors; the innocent partner was held jointly and severally liable.",options:["Ernst & Young v. Falconi","Thorne v. New Brunswick","Salomon v. Salomon","Lloyd v. Grace, Smith & Co."],correct:0,why:"Ernst & Young v. Falconi — partners are vicariously liable for a co-partner's wrongful acts in the ordinary course of business, even if fraudulent."},
+  {m:5,type:"mc",q:"NAME THE CASE: A man incorporated his boot business and took secured debentures; when it failed, he was held NOT personally liable because the company was a separate legal person.",options:["Lee v. Lee's Air Farming","Salomon v. Salomon & Co.","Thorne v. New Brunswick","Ernst & Young v. Falconi"],correct:1,why:"Salomon v. Salomon — the foundational 'corporate veil' case; creditors of the company cannot pursue the shareholders."},
+  {m:5,type:"mc",q:"NAME THE CASE: A man was sole governing director AND chief pilot of his company; after he died in a crash, his widow recovered workers' compensation because company and man were separate persons.",options:["Salomon v. Salomon","Thorne v. New Brunswick","Lee v. Lee's Air Farming","McCormick v. Fasken"],correct:2,why:"Lee v. Lee's Air Farming — one person can be both controlling director/shareholder AND an employee of his corporation."},
+  {m:5,type:"mc",q:"NAME THE CASE: An equity partner was held NOT to be an 'employee' and so was not protected by human-rights/employment law, reinforcing that partners ≠ employees.",options:["Thorne v. New Brunswick","McCormick v. Fasken","Lee v. Lee's Air Farming","Ernst & Young v. Falconi"],correct:1,why:"McCormick v. Fasken — referenced by the professor; an equity partner is not an employee, reinforcing Thorne."},
+  {m:2,type:"short",q:"CASE RECALL: State the case name and one-line principle for the agency 'secret profit' rule.",model:"Thompson v. Meade — an agent owes a fiduciary duty and may not take a secret profit at the principal's expense."},
+  {m:5,type:"short",q:"CASE RECALL: Name the two cases that contrast on whether an owner can be an employee, and the result of each.",model:"Thorne v. New Brunswick — a partner cannot be an employee of his own firm (partnership has no separate legal entity). Lee v. Lee's Air Farming — a controlling shareholder CAN be an employee of his corporation (separate legal entity)."},
+
+  // ---- SCENARIO / APPLICATION ROUND (read the fact pattern, classify it) ----
+  // Module 3 — contracting defects: "this is an example of what type of..."
+  {m:3,type:"short",q:"SCENARIO: A widow signs a document she is told is a minor receipt, but it is actually a transfer of her house. She had no real understanding of what she was signing. This is an example of which contracting defect?",model:"Non est factum ('it is not my deed') — the signer was fundamentally mistaken about the very nature of the document."},
+  {m:3,type:"short",q:"SCENARIO: A car seller states the vehicle has 50,000 km when he knows it has 150,000 km, and the buyer relies on this and buys. This is an example of which contracting defect?",model:"Misrepresentation — a false statement of fact that induces the other party to enter the contract."},
+  {m:3,type:"short",q:"SCENARIO: After a valid contract is signed to rent a hall for an event, the hall burns down through no one's fault, making performance impossible. Which doctrine applies, and how is it different from mistake?",model:"Frustration — an unforeseen event arising AFTER formation makes performance impossible or radically different, through no fault of either party. (Mistake, by contrast, exists AT formation.)"},
+  {m:3,type:"short",q:"SCENARIO: One party threatens to physically harm the other unless they sign the contract. This is an example of which contracting defect?",model:"Duress — improper pressure (e.g., threats) that overbears the other party's free will."},
+  {m:3,type:"short",q:"SCENARIO: A caregiver in a relationship of trust pressures a dependent, elderly client into gifting them property. This is an example of which contracting defect?",model:"Undue influence — improper pressure arising from a relationship of trust/dominance that overbears the weaker party's free will."},
+  {m:3,type:"short",q:"SCENARIO: A party with vastly superior bargaining power gets a vulnerable person, with no independent advice, to agree to a grossly unfair deal. This is an example of which contracting defect?",model:"Unconscionable transaction — gross inequality of bargaining power PLUS an improvident (grossly unfair) bargain."},
+  {m:3,type:"short",q:"SCENARIO: Two parties contract over goods 'ex Peerless,' but each genuinely means a different ship of that name, so they never agreed on the same thing. Which defect is this, and what is the result?",model:"Mutual mistake — there is no consensus ad idem (no meeting of the minds), so no contract is formed (Raffles v. Wichelhaus)."},
+  // Module 3 — same topics, MC form for variety on another day
+  {m:3,type:"mc",q:"SCENARIO: A homeowner signs what she is told is a small receipt but is in fact a mortgage over her home. Her best defence is:",options:["Frustration","Non est factum","Repudiation","Lack of consideration"],correct:1,why:"Non est factum — she was fundamentally mistaken about the nature of the document she signed."},
+  {m:3,type:"mc",q:"SCENARIO: Two weeks before the deadline, a contractor emails 'I will not be completing this job.' This is:",options:["Tender","Performance","Repudiation","Frustration"],correct:2,why:"Repudiation — one party signals it will not perform before performance is due."},
+  {m:3,type:"mc",q:"SCENARIO: A supplier shows up ready, willing and able to deliver the goods exactly as agreed, offering to perform. This is:",options:["Tender","Breach","Repudiation","Mitigation"],correct:0,why:"Tender — an offer to perform."},
+  {m:3,type:"mc",q:"SCENARIO: A 16-year-old signs a contract to buy a sports car (not a necessary). The contract is:",options:["Fully binding on the minor","Void from the outset","Voidable at the minor's option","Illegal"],correct:2,why:"Minors' contracts are generally voidable by the minor, except contracts for necessaries."},
+  {m:3,type:"mc",q:"SCENARIO: After breaching a contract, the innocent party makes no effort to find a replacement supplier and lets losses pile up. A court will likely:",options:["Award all losses regardless","Reduce damages for failure to mitigate","Void the contract","Treat it as frustration"],correct:1,why:"Mitigation — the victim must take reasonable steps to reduce their loss; unmitigated losses are not recoverable."},
+  // Module 2 — authority application
+  {m:2,type:"mc",q:"SCENARIO: A store manager orders inventory from a regular supplier — something anyone in that position normally does — without explicit instruction. This is:",options:["Express authority","Implied authority","Usual authority","Apparent authority"],correct:2,why:"Usual authority — power that normally comes with the role/title."},
+  {m:2,type:"mc",q:"SCENARIO: A ship's master does what masters customarily do in the shipping trade. The authority relied on is:",options:["Express","Usual","Customary","Non est factum"],correct:2,why:"Customary authority — arising from the customs/practices of the particular trade or industry."},
+  {m:2,type:"short",q:"SCENARIO: A company lets a third party reasonably believe an employee can sign contracts; the third party relies on that, though the employee actually had no authority. Which type of authority binds the company?",model:"Apparent (ostensible) authority — created by the principal's representation, on which the third party reasonably relied."},
+  // Module 1 — civil vs criminal application
+  {m:1,type:"mc",q:"SCENARIO: A neighbour sues another over damage from a fallen fence, seeking money. This proceeding is:",options:["Criminal; beyond a reasonable doubt","Civil; balance of probabilities","Criminal; balance of probabilities","Civil; beyond a reasonable doubt"],correct:1,why:"A private dispute seeking damages is civil, decided on the balance of probabilities (~51%)."},
+  {m:1,type:"mc",q:"SCENARIO: The Crown prosecutes a person for theft. The standard of proof the Crown must meet is:",options:["Balance of probabilities (~51%)","Beyond a reasonable doubt (~92%)","100% certainty","Reasonable suspicion"],correct:1,why:"Criminal matters require proof beyond a reasonable doubt (~92%), not 100% certainty."},
+  // Module 4 — apply the shall-test
+  {m:4,type:"short",q:"SCENARIO: A clause reads 'any failure to deliver shall constitute a breach.' Apply the shall-test: is 'shall' used correctly, and what is the fix?",model:"No — 'shall' should impose a duty on the subject (replaceable by 'has an obligation to'). A 'failure' has no obligation, so it is misused. Fix: use 'will' or the present tense ('constitutes')."},
+  // Module 5 — structure / veil application
+  {m:5,type:"mc",q:"SCENARIO: Two friends run a business together for profit without registering anything; one runs up a large debt. Liability is:",options:["Limited to each person's investment","Borne only by the partner who incurred it","Joint and several across both partners","None — there is no legal entity to sue"],correct:2,why:"They are a partnership; liability is unlimited and joint and several, so each is liable for the whole debt."},
+  {m:5,type:"short",q:"SCENARIO: A creditor of a failed incorporated company wants to sue the sole shareholder personally for the company's debts. Can they generally do so, and which case governs?",model:"Generally no — Salomon v. Salomon establishes the company is a separate legal person (the corporate veil), so creditors of the company cannot pursue the shareholder personally."},
+
+  // ===== ADDITIONAL CORE QUESTIONS (to reach 100+ and add per-topic variety) =====
+  // ---- Module 1 ----
+  {m:1,type:"mc",q:"Common law is best described as:",options:["Law codified in the Civil Code","Judge-made law based on precedent","Rules made by government agencies","Rules passed by a legislature"],correct:1,why:"Common law is judge-made law based on precedent; it applies everywhere outside Quebec."},
+  {m:1,type:"tf",q:"The Constitution Act, 1982 includes the Charter of Rights and Freedoms.",answer:true,why:"The 1982 Act includes the Charter; the 1867 Act set out the division of federal/provincial powers."},
+  {m:1,type:"fill",q:"The Constitution Act, ____ created the division of federal and provincial powers.",accept:["1867"],why:"1867 = division of powers; 1982 = the Charter."},
+  {m:1,type:"tf",q:"Regulations are generally more flexible and change faster than statutes.",answer:true,why:"Statutes are passed by legislatures; regulations are detailed rules made under a statute and change more easily."},
+  {m:1,type:"mc",q:"At which stage of litigation do parties exchange information and evidence before trial?",options:["Pleadings","Discovery","Appeal","Certification"],correct:1,why:"Order: pleadings → discovery → trial → appeal."},
+  {m:1,type:"short",q:"What is law, and name two of its purposes?",model:"A set of rules enforced by the state, backed by courts and sanctions, distinct from ethics/morals. Purposes include: maintaining order, protecting rights, supporting economic activity, and resolving disputes."},
+  {m:1,type:"mc",q:"A key advantage of ADR over litigation is that it is generally:",options:["More predictable with full appeal rights","Faster, cheaper, private, and preserves relationships","Always binding and public","Decided by a jury"],correct:1,why:"ADR is faster, cheaper, private, and preserves relationships; the trade-off is less predictability and limited appeal."},
+  // ---- Module 2 ----
+  {m:2,type:"mc",q:"Express authority answers which question?",options:["What does the industry expect?","What was the agent told to do?","What does someone in this role normally do?","What is necessary to do the job?"],correct:1,why:"Express = authority directly given ('what was the agent told to do?')."},
+  {m:2,type:"fill",q:"Implied authority is what is necessary or ____ to carry out the agent's express authority.",accept:["incidental"],why:"Implied = not stated but necessary/incidental to carrying out express authority."},
+  {m:2,type:"tf",q:"An agent may freely delegate their authority to a sub-agent.",answer:false,why:"Delegatus non potest delegare — an agent generally cannot delegate authority to a sub-agent."},
+  {m:2,type:"mc",q:"Which is a duty of the PRINCIPAL (not the agent)?",options:["Loyalty","No secret profit","Reimbursement and indemnification","Act within authority"],correct:2,why:"Remuneration, reimbursement, indemnification, cooperation, and good faith are duties of the principal."},
+  // ---- Module 3 ----
+  {m:3,type:"tf",q:"You can be bound by a contract even if you did not read it.",answer:true,why:"The objective test looks at outward conduct, not the signer's inner mind."},
+  {m:3,type:"fill",q:"An offer must contain the ____ terms of the proposed contract.",accept:["material"],why:"An offer must contain the material terms and may even be made by conduct."},
+  {m:3,type:"tf",q:"A mere request for information counts as a counteroffer that rejects the original offer.",answer:false,why:"A request for information does NOT reject the offer; only a counteroffer (changing a term) does."},
+  {m:3,type:"mc",q:"Remoteness limits recoverable damages to losses that were:",options:["Actually suffered, no matter what","Reasonably foreseeable at the time of contracting","Caused by the innocent party","Listed in the contract only"],correct:1,why:"Remoteness = only losses reasonably foreseeable at the time of contracting are recoverable."},
+  {m:3,type:"short",q:"Distinguish an illegal contract from a contract performed illegally.",model:"An illegal contract is unlawful in its very object and is unenforceable; a contract performed illegally has a lawful object but is carried out in an unlawful way."},
+  {m:3,type:"mc",q:"Which presumption applies to commercial/business agreements regarding intention to create legal relations?",options:["Presumed NO intention to be bound","Presumed intention to be legally bound","No presumption either way","Always void"],correct:1,why:"Commercial = presumed intention to be bound; domestic/social = presumed none (both rebuttable)."},
+  // ---- Module 4 ----
+  {m:4,type:"mc",q:"The recommended fix for an over-complicated title like 'Comprehensive Tri-partite Merger Agreement' is to:",options:["Add more defined terms","Strip the filler (e.g., 'Merger Agreement')","Put it in ALL CAPS","Use a quill-pen style"],correct:1,why:"Strip filler so the title is plain and clear."},
+  {m:4,type:"tf",q:"Plain English drafting is generally shorter and clearer than archaic legalese.",answer:true,why:"Dropping 'quill pen' language makes documents shorter and clearer."},
+  {m:4,type:"fill",q:"Defined terms in a contract should be capitalized and used ____ throughout.",accept:["consistently"],why:"Don't mismatch defined terms (e.g., 'Employee ... his ... the Firm')."},
+  {m:4,type:"mc",q:"'Including but not limited to' and doubled phrases are examples of which drafting problem?",options:["Ambiguity","Redundancy","Misuse of 'shall'","Quill-pen language"],correct:1,why:"These are redundancy; cut them."},
+  {m:4,type:"tf",q:"The specific four categories of ambiguity (time, date, party, syntactic) are directly tested on the exam.",answer:false,why:"The instructor said they are NOT directly tested — be aware of them only to identify ambiguity generally."},
+  {m:4,type:"short",q:"Name two causes of poor drafting identified in the module.",model:"Over-reliance on precedents; the belief that legalese is precise; reliance on 'tested' language; and seeking status through obfuscation."},
+  {m:4,type:"mc",q:"To avoid date ambiguity in a contract, you should:",options:["Use DD/MM format","Write the date in full (e.g., 'August 20, 2026')","Use only the year","Use ALL CAPS"],correct:1,why:"Writing the date in full avoids DD/MM vs MM/DD confusion."},
+  // ---- Module 5 ----
+  {m:5,type:"mc",q:"Which business form has perpetual (continuous) existence?",options:["Sole proprietorship","Partnership","Corporation","None of these"],correct:2,why:"Only the corporation has perpetual existence; shares are transferable, supporting continuity."},
+  {m:5,type:"fill",q:"In a corporation, the people who own shares are called the ____.",accept:["shareholders","shareholder"],why:"Shareholders own shares; directors manage/board; officers are titled executives."},
+  {m:5,type:"tf",q:"A shareholder can also be a creditor and an employee of the same corporation.",answer:true,why:"Because the corporation is a separate legal person, a shareholder can contract with, lend to, manage, and be employed by it."},
+  {m:5,type:"mc",q:"Which business form makes it easiest to raise capital by issuing shares?",options:["Sole proprietorship","Partnership","Corporation","Holding-out partnership"],correct:2,why:"A corporation can issue shares, making it easiest to raise capital."},
+  {m:5,type:"short",q:"Name the three parties in a corporation and what each does.",model:"Shareholders (own shares), directors (manage / the board), and officers (titled executives who run day-to-day operations)."},
+  {m:5,type:"tf",q:"A 'holding-out' (pretend) partner can attract partnership liability without the benefits.",answer:true,why:"Someone who represents themselves, or lets themselves be represented, as a partner can be held liable."},
+  {m:5,type:"mc",q:"A partner who leaves a firm is:",options:["Free of all liability immediately","Still liable for obligations incurred during their time as a partner","Liable for acts before they joined","Never liable at all"],correct:1,why:"After leaving, a partner remains liable for obligations incurred during their time (until proper notice to creditors)."}
+];
+
+/* ---------- PERSISTENT "GOT WRONG" STORAGE ---------- */
+const STORE={
+  load(key){ try{ return JSON.parse(localStorage.getItem(key))||[]; }catch(e){ return (window.__mem&&window.__mem[key])||[]; } },
+  save(key,val){ try{ localStorage.setItem(key,JSON.stringify(val)); }catch(e){ window.__mem=window.__mem||{}; window.__mem[key]=val; } }
+};
+let fcWrong=STORE.load('com402_fc_wrong');     // array of flashcard question-texts
+function fcKey(c){return c.q;}
+function isWrong(c){return fcWrong.indexOf(fcKey(c))>=0;}
+function addWrong(c){ if(!isWrong(c)){ fcWrong.push(fcKey(c)); STORE.save('com402_fc_wrong',fcWrong); } updateWrongCount(); }
+function removeWrong(c){ const i=fcWrong.indexOf(fcKey(c)); if(i>=0){ fcWrong.splice(i,1); STORE.save('com402_fc_wrong',fcWrong); } updateWrongCount(); }
+function updateWrongCount(){
+  const el=document.getElementById('fc-wrongcount');
+  const rBtn=document.getElementById('fc-review');
+  const cBtn=document.getElementById('fc-clearwrong');
+  const n=fcWrong.length;
+  el.textContent = n ? ('⚠ '+n+' term'+(n>1?'s':'')+' in your review deck — press the ⚠ Review deck button to drill them.') : '';
+  if(rBtn){ rBtn.style.display = n?'':'none'; rBtn.textContent='⚠ Review deck ('+n+')'; }
+  if(cBtn){ cBtn.style.display = n?'':'none'; }
+}
+
+/* ---------- FLASHCARD ENGINE ---------- */
+let fcDeck=[], fcIdx=0, fcFront=true, fcReverse=false;
+function buildDeck(){
+  const m=document.getElementById('fc-module').value;
+  if(m==='wrong'){
+    fcDeck=FLASHCARDS.filter(isWrong);
+  }else{
+    fcDeck=FLASHCARDS.filter(c=>m==='all'||String(c.m)===m);
+  }
+  fcIdx=0; fcFront=true; renderCard();
+}
+function renderCard(){
+  const grade=document.getElementById('fc-grade');
+  if(!fcDeck.length){
+    document.getElementById('fc-label').textContent='';
+    document.getElementById('fc-text').textContent = document.getElementById('fc-module').value==='wrong'
+      ? '🎉 Your review deck is empty — nothing to revisit right now.' : 'No cards.';
+    document.getElementById('fc-counter').textContent='';
+    grade.style.display='none';
+    return;
+  }
+  const c=fcDeck[fcIdx];
+  const tag=isWrong(c)?' · ⚠ in review deck':'';
+  // direction: in reverse mode the ANSWER is shown first
+  const faceIsAnswer = fcReverse ? fcFront : !fcFront;
+  document.getElementById('fc-label').textContent=(faceIsAnswer?'ANSWER':'QUESTION')+' · MOD '+c.m+tag;
+  document.getElementById('fc-text').textContent=faceIsAnswer?c.a:c.q;
+  const fcEl=document.getElementById('flashcard');
+  fcEl.style.background=faceIsAnswer?'#e8f5ee':'#ffffff';
+  fcEl.style.borderTopColor=faceIsAnswer?'var(--good)':'var(--blue)';
+  fcEl.style.color=faceIsAnswer?'#14532d':'var(--ink)';
+  document.getElementById('fc-counter').textContent=`Card ${fcIdx+1} of ${fcDeck.length} — click card to flip`;
+  // show grade buttons only once the answer is revealed
+  grade.style.display=fcFront?'none':'flex';
+  document.getElementById('fc-missed').textContent = isWrong(c)?'✗ Keep in review':'✗ Review later';
+}
+function fcAdvance(){
+  // after grading, move to next card; if reviewing the wrong-deck and it shrank, rebuild
+  if(document.getElementById('fc-module').value==='wrong'){ buildDeck(); return; }
+  fcIdx=(fcIdx+1)%fcDeck.length; fcFront=true; renderCard();
+}
+document.getElementById('flashcard').addEventListener('click',()=>{fcFront=!fcFront;renderCard();});
+document.getElementById('fc-next').addEventListener('click',()=>{fcIdx=(fcIdx+1)%fcDeck.length;fcFront=true;renderCard();});
+document.getElementById('fc-prev').addEventListener('click',()=>{fcIdx=(fcIdx-1+fcDeck.length)%fcDeck.length;fcFront=true;renderCard();});
+document.getElementById('fc-module').addEventListener('change',buildDeck);
+document.getElementById('fc-direction').addEventListener('click',(e)=>{
+  fcReverse=!fcReverse; fcFront=true;
+  e.target.textContent = fcReverse ? '🔃 Answer first' : '🔃 Question first';
+  renderCard();
+});
+document.getElementById('fc-shuffle').addEventListener('click',()=>{fcDeck.sort(()=>Math.random()-0.5);fcIdx=0;fcFront=true;renderCard();});
+document.getElementById('fc-review').addEventListener('click',()=>{
+  document.getElementById('fc-module').value='wrong';
+  buildDeck();
+  document.getElementById('view-cards').scrollIntoView({behavior:'smooth',block:'start'});
+});
+document.getElementById('fc-knew').addEventListener('click',()=>{ if(fcDeck.length){ removeWrong(fcDeck[fcIdx]); fcAdvance(); } });
+document.getElementById('fc-missed').addEventListener('click',()=>{ if(fcDeck.length){ addWrong(fcDeck[fcIdx]); fcAdvance(); } });
+document.getElementById('fc-clearwrong').addEventListener('click',()=>{
+  if(!fcWrong.length){ return; }
+  if(confirm('Empty your flashcard review deck? This clears all '+fcWrong.length+' terms you marked to revisit.')){
+    fcWrong=[]; STORE.save('com402_fc_wrong',fcWrong); updateWrongCount(); buildDeck();
+  }
+});
+updateWrongCount();
+buildDeck();
+
+/* ---------- QUIZ ENGINE (with adaptive repetition) ---------- */
+let activeQuiz=[], answered={}, scored={};
+let quizWrong=STORE.load('com402_quiz_wrong');   // persistent: question texts missed
+function addQuizWrong(q){ if(quizWrong.indexOf(q.q)<0){ quizWrong.push(q.q); STORE.save('com402_quiz_wrong',quizWrong); } }
+function removeQuizWrong(q){ const i=quizWrong.indexOf(q.q); if(i>=0){ quizWrong.splice(i,1); STORE.save('com402_quiz_wrong',quizWrong); } }
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function norm(s){return (s||'').toLowerCase().replace(/[^a-z0-9 ]/g,'').replace(/\s+/g,' ').trim();}
+const REPEAT_CAP=3; // max times a missed question is re-queued within one session
+let quizReverse=false;
+
+function startQuiz(list){
+  activeQuiz=list; answered={}; scored={};
+  renderQuiz();
+  document.getElementById('quiz-start').classList.add('hidden');
+  document.getElementById('quiz-result').classList.add('hidden');
+  document.getElementById('quiz-run').classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.getElementById('q-start').addEventListener('click',()=>{
+  const m=document.getElementById('q-module').value;
+  const n=parseInt(document.getElementById('q-count').value,10);
+  quizReverse=document.getElementById('q-reverse').checked;
+  let pool=QUIZ.filter(q=>m==='all'||String(q.m)===m);
+  pool=shuffle(pool);
+  startQuiz(pool.slice(0,Math.min(n,pool.length)));
+});
+
+// the "answer" shown first in recall mode
+function answerText(q){
+  if(q.type==='tf') return '"'+q.q+'"  →  This statement is '+(q.answer?'TRUE':'FALSE')+'.';
+  if(q.type==='mc') return q.options[q.correct];
+  if(q.type==='fill') return q.accept[0];
+  return q.model; // short
+}
+// build a reverse multiple-choice: given an answer, pick the matching question.
+// distractors are other questions (prefer same module) whose answer differs.
+function buildReverseOptions(q){
+  const mine=answerText(q);
+  const others=QUIZ.filter(x=>x.q!==q.q && answerText(x)!==mine);
+  const pool=shuffle(others.filter(x=>x.m===q.m)).concat(shuffle(others.filter(x=>x.m!==q.m)));
+  const picks=[], seen={}; seen[q.q]=1;
+  for(const x of pool){ if(picks.length>=3) break; if(seen[x.q]) continue; seen[x.q]=1; picks.push(x.q); }
+  const opts=shuffle([q.q].concat(picks));
+  return {options:opts, correct:opts.indexOf(q.q)};
+}
+
+const typeLabel={tf:'TRUE / FALSE',mc:'MULTIPLE CHOICE',fill:'FILL IN THE BLANK',short:'SHORT ANSWER'};
+function renderOneQuestion(q,i,repeat){
+  const host=document.getElementById('quiz-questions');
+  const div=document.createElement('div');
+  div.className='q'; div.id='q-'+i;
+  const rptTag = repeat ? ' <span style="color:var(--bad)">· 🔁 REPEAT — you missed this earlier</span>' : '';
+  // ----- ANSWER-FIRST RECALL MODE (reverse multiple choice) -----
+  if(quizReverse){
+    if(!q.__rqOptions){ const r=buildReverseOptions(q); q.__rqOptions=r.options; q.__rqCorrect=r.correct; }
+    const opts=q.__rqOptions.map((txt,oi)=>`<label class="opt"><input type="radio" name="rq${i}" value="${oi}">${txt}</label>`).join('');
+    div.innerHTML=`<span class="qtype" style="background:var(--good)">🔃 MATCH THE QUESTION</span>
+      <div class="qnum">CARD ${i+1} · MODULE ${q.m}${rptTag}</div>
+      <div class="muted" style="font-size:13px;margin:2px 0 6px">Which question does this answer belong to?</div>
+      <div class="qtext" style="color:#14532d;background:#e8f5ee;border-radius:6px;padding:10px 12px">${answerText(q)}</div>
+      <div class="opts" style="margin-top:10px">${opts}</div>
+      <div class="feedback" id="fb-${i}"></div>`;
+    host.appendChild(div);
+    div.querySelectorAll('input[type=radio]').forEach(r=>r.addEventListener('change',()=>autoCheckReverse(i,r.value)));
+    return;
+  }
+  let body='';
+  if(q.type==='tf'){
+    body=`<label class="opt"><input type="radio" name="q${i}" value="true">True</label>
+          <label class="opt"><input type="radio" name="q${i}" value="false">False</label>`;
+  }else if(q.type==='mc'){
+    body=q.options.map((o,oi)=>`<label class="opt"><input type="radio" name="q${i}" value="${oi}">${o}</label>`).join('');
+  }else if(q.type==='fill'){
+    body=`<input type="text" class="fill" id="fill-${i}" placeholder="Type your answer…" autocomplete="off">
+          <button class="btn" style="margin-top:8px" onclick="checkFill(${i})">Check</button>`;
+  }else if(q.type==='short'){
+    body=`<input type="text" class="fill" id="short-${i}" placeholder="Type your answer, then reveal the model answer…" autocomplete="off">
+          <button class="btn" style="margin-top:8px" onclick="revealShort(${i})">Reveal model answer</button>`;
+  }
+  const rpt = repeat ? ' <span style="color:var(--bad)">· 🔁 REPEAT — you missed this earlier</span>' : '';
+  div.innerHTML=`<span class="qtype">${typeLabel[q.type]}</span>
+    <div class="qnum">QUESTION ${i+1} · MODULE ${q.m}${rpt}</div>
+    <div class="qtext">${q.q}</div>
+    <div class="opts">${body}</div>
+    <div class="feedback" id="fb-${i}"></div>`;
+  host.appendChild(div);
+  if(q.type==='tf'||q.type==='mc'){
+    div.querySelectorAll('input[type=radio]').forEach(r=>{
+      r.addEventListener('change',()=>autoCheck(i,r.value));
+    });
+  }
+}
+function renderQuiz(){
+  document.getElementById('quiz-questions').innerHTML='';
+  activeQuiz.forEach((q,i)=>renderOneQuestion(q,i,q.__repeat));
+  updateProgress();
+}
+
+// re-queue a missed question to the bottom so it comes back for more practice
+function requeue(q){
+  const copies=activeQuiz.filter(x=>x.q===q.q).length;
+  if(copies>=REPEAT_CAP) return;
+  const clone=Object.assign({},q,{__repeat:true});
+  activeQuiz.push(clone);
+  renderOneQuestion(clone,activeQuiz.length-1,true);
+  updateProgress();
+}
+
+function resolveResult(i,q,correct){
+  answered[i]=true; scored[i]=correct;
+  if(correct){ removeQuizWrong(q); } else { addQuizWrong(q); requeue(q); }
+  updateProgress();
+}
+
+function autoCheck(i,val){
+  const q=activeQuiz[i];
+  if(answered[i]) return;
+  let correct=false, correctText='';
+  if(q.type==='tf'){
+    correct=(val==='true')===q.answer;
+    correctText='Correct answer: '+(q.answer?'True':'False');
+  }else if(q.type==='mc'){
+    correct=parseInt(val,10)===q.correct;
+    correctText='Correct answer: '+q.options[q.correct];
+  }
+  const block=document.getElementById('q-'+i);
+  const inputs=block.querySelectorAll('.opt');
+  inputs.forEach(opt=>{
+    const r=opt.querySelector('input');
+    if(q.type==='tf'){
+      if((r.value==='true')===q.answer) opt.classList.add('correct');
+      else if(r.checked) opt.classList.add('wrong');
+    }else{
+      if(parseInt(r.value,10)===q.correct) opt.classList.add('correct');
+      else if(r.checked) opt.classList.add('wrong');
+    }
+    r.disabled=true;
+  });
+  const fb=document.getElementById('fb-'+i);
+  fb.className='feedback show '+(correct?'ok':'err');
+  fb.innerHTML=(correct?'✅ Correct. ':'❌ Not quite. ')+correctText+(correct?'':' <i>Added to the bottom for another go.</i>')+'<div class="reveal">'+q.why+'</div>';
+  resolveResult(i,q,correct);
+}
+
+function checkFill(i){
+  const q=activeQuiz[i];
+  if(answered[i]) return;
+  const val=norm(document.getElementById('fill-'+i).value);
+  if(!val) return;
+  const correct=q.accept.some(a=>norm(a)===val || val.includes(norm(a)));
+  document.getElementById('fill-'+i).disabled=true;
+  const fb=document.getElementById('fb-'+i);
+  fb.className='feedback show '+(correct?'ok':'err');
+  fb.innerHTML=(correct?'✅ Correct. ':'❌ Not quite. ')+'Accepted answer: <b>'+q.accept[0]+'</b>'+(correct?'':' <i>Added to the bottom for another go.</i>')+'<div class="reveal">'+q.why+'</div>';
+  resolveResult(i,q,correct);
+}
+
+function revealShort(i){
+  const q=activeQuiz[i];
+  const fb=document.getElementById('fb-'+i);
+  document.getElementById('short-'+i).disabled=true;
+  fb.className='feedback show ok';
+  fb.innerHTML='<b>Model answer:</b> '+q.model+
+    '<div class="selfgrade"><button class="btn" onclick="selfGrade('+i+',true)">✅ I got it right</button><button class="btn" onclick="selfGrade('+i+',false)">❌ I missed it</button></div>'+
+    '<div class="reveal" id="sg-'+i+'"></div>';
+}
+function selfGrade(i,ok){
+  const q=activeQuiz[i];
+  document.getElementById('sg-'+i).textContent=ok?'Marked correct.':'Marked incorrect — re-added to the bottom to practice again.';
+  resolveResult(i,q,ok);
+}
+
+// answer-first recall (reverse MC): pick which question matches the shown answer
+function autoCheckReverse(i,val){
+  const q=activeQuiz[i];
+  if(answered[i]) return;
+  const correct=parseInt(val,10)===q.__rqCorrect;
+  document.getElementById('q-'+i).querySelectorAll('.opt').forEach((opt,oi)=>{
+    const r=opt.querySelector('input');
+    if(oi===q.__rqCorrect) opt.classList.add('correct');
+    else if(r.checked) opt.classList.add('wrong');
+    r.disabled=true;
+  });
+  const fb=document.getElementById('fb-'+i);
+  fb.className='feedback show '+(correct?'ok':'err');
+  fb.innerHTML=(correct?'✅ Correct. ':'❌ Not quite. ')+'Matching question: <b>'+q.q+'</b>'+(correct?'':' <i>Added to the bottom for another go.</i>')+(q.why?'<div class="reveal">'+q.why+'</div>':'');
+  resolveResult(i,q,correct);
+}
+
+function updateProgress(){
+  const total=activeQuiz.length;
+  const done=Object.keys(answered).length;
+  const right=Object.values(scored).filter(Boolean).length;
+  document.getElementById('q-progress').textContent=done+' / '+total+' answered';
+  document.getElementById('q-score').textContent='Score: '+right;
+}
+
+document.getElementById('q-finish').addEventListener('click',()=>{
+  const total=activeQuiz.length;
+  const right=Object.values(scored).filter(Boolean).length;
+  const pct=total?Math.round(right/total*100):0;
+  document.getElementById('r-pct').textContent=pct+'%';
+  document.getElementById('r-detail').textContent=right+' of '+total+' correct';
+  document.getElementById('r-bar').style.width=pct+'%';
+  let msg;
+  if(pct>=90) msg='🏆 Exam-ready. Outstanding.';
+  else if(pct>=75) msg='💪 Strong. Tighten the few you missed.';
+  else if(pct>=60) msg='📚 Solid base — review the misses and run it again.';
+  else msg='🔁 Keep going. Re-read the notes for weak modules, then retry.';
+  document.getElementById('r-msg').textContent=msg;
+  // adaptive: offer to drill the accumulated misses
+  const pBtn=document.getElementById('q-practice');
+  const note=document.getElementById('r-wrongnote');
+  if(quizWrong.length){
+    pBtn.style.display='';
+    pBtn.textContent='🔁 Practice the ones I missed ('+quizWrong.length+')';
+    note.textContent='Your missed questions are saved across sessions, so you can keep drilling them until they stick.';
+  }else{
+    pBtn.style.display='none';
+    note.textContent='🎉 No outstanding misses saved — nicely done.';
+  }
+  document.getElementById('quiz-run').classList.add('hidden');
+  document.getElementById('quiz-result').classList.remove('hidden');
+  document.getElementById('review-area').innerHTML='';
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+document.getElementById('q-practice').addEventListener('click',()=>{
+  let pool=QUIZ.filter(q=>quizWrong.indexOf(q.q)>=0);
+  if(!pool.length){ alert('No saved misses to practice.'); return; }
+  startQuiz(shuffle(pool));
+});
+
+document.getElementById('q-reset').addEventListener('click',()=>{
+  const done=Object.keys(answered).length;
+  if(done>0 && !confirm('Reset this quiz and draw a fresh set of questions? Your current progress will be cleared.')) return;
+  const m=document.getElementById('q-module').value;
+  const n=parseInt(document.getElementById('q-count').value,10);
+  let pool=QUIZ.filter(q=>m==='all'||String(q.m)===m);
+  pool=shuffle(pool);
+  activeQuiz=pool.slice(0,Math.min(n,pool.length));
+  answered={}; scored={};
+  renderQuiz();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+document.getElementById('q-again').addEventListener('click',()=>{
+  document.getElementById('quiz-result').classList.add('hidden');
+  document.getElementById('quiz-start').classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+document.getElementById('q-review').addEventListener('click',()=>{
+  const area=document.getElementById('review-area');
+  const tl={tf:'T/F',mc:'MC',fill:'Fill',short:'Short'};
+  const seen={};
+  area.innerHTML='<h2 class="mod">Answer review</h2>'+activeQuiz.map((q,i)=>{
+    if(seen[q.q]) return ''; seen[q.q]=1;            // dedupe re-queued repeats
+    const got=scored[i];
+    let ans = q.type==='tf'?(q.answer?'True':'False') : q.type==='mc'?q.options[q.correct] : q.type==='fill'?q.accept[0] : q.model;
+    const tag = answered[i]?(got?'✅':'❌'):'⚪ (skipped)';
+    return `<div class="q"><div class="qnum">${tag} ${tl[q.type]} · Module ${q.m}</div>
+      <div class="qtext">${q.q}</div>
+      <div class="feedback show ok"><b>Answer:</b> ${ans}<div class="reveal">${q.why||''}</div></div></div>`;
+  }).join('');
+  area.scrollIntoView({behavior:'smooth'});
+});
+</script>
+</body>
+</html>
